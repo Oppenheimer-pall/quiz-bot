@@ -722,11 +722,12 @@ def extract_pdf_text(file_bytes: bytes) -> str:
         log.warning(f"pdf extract: {e}"); return ""
 
 async def ai_generate_questions(text: str, lang: str, n: int = 10) -> list:
-    """Claude API orqali savol yaratish"""
+    """Claude AsyncAPI orqali savol yaratish"""
     if not ANTHROPIC_OK or not ANTHROPIC_KEY:
         return []
+
     prompt_uz = f"""Quyidagi matndan {n} ta test savoli tuz (o'zbek tilida).
-Javobni FAQAT JSON formatida ber, boshqa hech narsa yozma:
+Javobni FAQAT sof JSON formatida ber — hech qanday ``` yoki izoh yozma:
 [
   {{
     "q": "Savol matni",
@@ -741,7 +742,7 @@ MATN:
 {text}"""
 
     prompt_ru = f"""Составь {n} тестовых вопросов на русском языке по следующему тексту.
-Ответ дай ТОЛЬКО в формате JSON, без лишнего текста:
+Ответ дай ТОЛЬКО в виде чистого JSON — без ``` и без лишнего текста:
 [
   {{
     "q": "Текст вопроса",
@@ -757,27 +758,38 @@ ans = индекс правильного варианта (0=A, 1=B, 2=C, 3=D)
 
     prompt = prompt_uz if lang == "uz" else prompt_ru
     try:
-        client   = anthropic.Anthropic(api_key=ANTHROPIC_KEY)
-        response = client.messages.create(
+        # AsyncAnthropic — async bot bilan to'g'ri ishlaydi
+        client   = anthropic.AsyncAnthropic(api_key=ANTHROPIC_KEY)
+        response = await client.messages.create(
             model      = "claude-sonnet-4-20250514",
             max_tokens = 4096,
             messages   = [{"role": "user", "content": prompt}]
         )
         raw = response.content[0].text.strip()
-        # JSON ni tozalashtirish
-        if raw.startswith("```"):
-            raw = raw.split("```")[1]
-            if raw.startswith("json"):
-                raw = raw[4:]
+        # JSON tozalash — ``` bo'lsa olib tashla
+        if "```" in raw:
+            parts = raw.split("```")
+            for part in parts:
+                part = part.strip()
+                if part.startswith("json"):
+                    part = part[4:].strip()
+                if part.startswith("["):
+                    raw = part; break
+        # Boshidagi [ va oxiridagi ] topish
+        start = raw.find("[")
+        end   = raw.rfind("]")
+        if start != -1 and end != -1:
+            raw = raw[start:end+1]
         questions = json.loads(raw)
         # Validatsiya
         valid = []
         for q in questions:
             if all(k in q for k in ("q","opts","ans","exp")) and len(q["opts"]) == 4:
                 valid.append(q)
+        log.info(f"ai_generate: {len(valid)} ta savol yaratildi")
         return valid[:n]
     except Exception as e:
-        log.warning(f"ai_generate: {e}"); return []
+        log.warning(f"ai_generate xato: {e}"); return []
 
 async def handle_pdf(u: Update, ctx: ContextTypes.DEFAULT_TYPE):
     uid  = u.effective_user.id
@@ -801,9 +813,6 @@ async def handle_pdf(u: Update, ctx: ContextTypes.DEFAULT_TYPE):
             await ctx.bot.send_message(cid, txt(uid, "pdf_no_text"),
                                        reply_markup=main_kb(uid)); return
 
-        questions = await asyncio.get_event_loop().run_in_executor(
-            None, lambda: asyncio.run(ai_generate_questions(pdf_text, lang)))
-        # run_in_executor bilan async funksiya muammo chiqaradi, to'g'ridan chaqiramiz:
         questions = await ai_generate_questions(pdf_text, lang)
 
         if not questions:
