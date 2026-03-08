@@ -757,15 +757,20 @@ ans = индекс правильного варианта (0=A, 1=B, 2=C, 3=D)
 {text}"""
 
     prompt = prompt_uz if lang == "uz" else prompt_ru
-    try:
-        # AsyncAnthropic — async bot bilan to'g'ri ishlaydi
-        client   = anthropic.AsyncAnthropic(api_key=ANTHROPIC_KEY)
-        response = await client.messages.create(
+    def _sync_call(p):
+        client   = anthropic.Anthropic(api_key=ANTHROPIC_KEY)
+        response = client.messages.create(
             model      = "claude-sonnet-4-20250514",
             max_tokens = 4096,
-            messages   = [{"role": "user", "content": prompt}]
+            messages   = [{"role": "user", "content": p}]
         )
-        raw = response.content[0].text.strip()
+        return response.content[0].text.strip()
+
+    try:
+        import concurrent.futures
+        loop = asyncio.get_event_loop()
+        with concurrent.futures.ThreadPoolExecutor() as pool:
+            raw = await loop.run_in_executor(pool, _sync_call, prompt)
         # JSON tozalash — ``` bo'lsa olib tashla
         if "```" in raw:
             parts = raw.split("```")
