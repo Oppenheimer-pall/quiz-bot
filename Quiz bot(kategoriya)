@@ -384,9 +384,6 @@ def main_kb(uid):
     lang = user_lang.get(uid, "uz")
     return ReplyKeyboardMarkup([
         [KeyboardButton(TX[lang]["btn_tests"])],
-        [KeyboardButton(TX[lang]["btn_mikro"]),
-         KeyboardButton(TX[lang]["btn_makro"])],
-        [KeyboardButton(TX[lang]["btn_pul"])],
         [KeyboardButton(TX[lang]["btn_top"]),
          KeyboardButton(TX[lang]["btn_stats"])],
         [KeyboardButton(TX[lang]["btn_help"])],
@@ -488,11 +485,6 @@ async def handle_reply_btn(u: Update, ctx: ContextTypes.DEFAULT_TYPE):
                                    reply_markup=main_kb(uid))
         await ctx.bot.send_message(cid, "👇 Fan tanlang:",
                                    reply_markup=InlineKeyboardMarkup(kb)); return
-
-    # Har bir kategoriya to'g'ridan tugma orqali ham ochiladi
-    for cat_key, cat in CATEGORIES.items():
-        if text == f"{cat['emoji']} {cat[lang]}":
-            await show_topic_inline(uid, cat_key, cid, ctx); return
 
     # Reyting
     if text == TX[lang]["btn_top"]:
