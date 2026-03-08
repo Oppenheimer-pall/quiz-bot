@@ -16,10 +16,10 @@ except ImportError:
     PYPDF_OK = False
 
 try:
-    import anthropic
-    ANTHROPIC_OK = True
+    import google.generativeai as genai
+    GEMINI_OK = True
 except ImportError:
-    ANTHROPIC_OK = False
+    GEMINI_OK = False
 
 try:
     from PIL import Image, ImageDraw
@@ -36,7 +36,7 @@ from telegram.ext import (
 
 # ── CONFIG ────────────────────────────────────────────────
 TOKEN          = os.getenv("BOT_TOKEN", "8657957504:AAEqdqcK9Ljix2-DYiYoXFgWiuWJzIkq9c8")
-ANTHROPIC_KEY  = os.getenv("ANTHROPIC_API_KEY", "")
+GEMINI_KEY     = os.getenv("GEMINI_API_KEY", "")
 _adm      = os.getenv("ADMIN_IDS", "0")
 ADMIN_IDS = [int(x) for x in _adm.split(",") if x.strip().isdigit()]
 DB_PATH   = "quiz.db"
@@ -76,7 +76,7 @@ TX = {
         # PDF
         "pdf_recv"    : "📄 PDF qabul qilindi! AI test tuzmoqda... ⏳ (30-60 soniya)",
         "pdf_no_text" : "❌ PDF dan matn o'qib bo'lmadi.",
-        "pdf_no_ai"   : "❌ AI xizmati sozlanmagan. Admin bilan bog'laning.",
+        "pdf_no_ai"   : "❌ AI xizmati sozlanmagan (GEMINI_API_KEY yo'q). Admin bilan bog'laning.",
         "pdf_fail"    : "❌ Test tuzishda xato yuz berdi. Qayta urinib ko'ring.",
         "pdf_done"    : "✅ {n} ta savol tayyorlandi! Boshlanmoqda...",
         # Feedback
@@ -125,7 +125,7 @@ TX = {
         # PDF
         "pdf_recv"    : "📄 PDF получен! AI составляет тест... ⏳ (30-60 секунд)",
         "pdf_no_text" : "❌ Не удалось прочитать текст из PDF.",
-        "pdf_no_ai"   : "❌ AI сервис не настроен. Обратитесь к администратору.",
+        "pdf_no_ai"   : "❌ AI сервис не настроен (GEMINI_API_KEY отсутствует). Обратитесь к администратору.",
         "pdf_fail"    : "❌ Ошибка при составлении теста. Попробуйте снова.",
         "pdf_done"    : "✅ Подготовлено {n} вопросов! Начинаем...",
         # Feedback
@@ -722,12 +722,13 @@ def extract_pdf_text(file_bytes: bytes) -> str:
         log.warning(f"pdf extract: {e}"); return ""
 
 async def ai_generate_questions(text: str, lang: str, n: int = 10) -> list:
-    """Claude AsyncAPI orqali savol yaratish"""
-    if not ANTHROPIC_OK or not ANTHROPIC_KEY:
+    """Google Gemini API orqali savol yaratish"""
+    if not GEMINI_OK or not GEMINI_KEY:
         return []
 
     prompt_uz = f"""Quyidagi matndan {n} ta test savoli tuz (o'zbek tilida).
-Javobni FAQAT sof JSON formatida ber — hech qanday ``` yoki izoh yozma:
+Javobni FAQAT sof JSON formatida ber — hech qanday ``` yoki izoh yozma.
+Faqat [ ] ichidagi JSON massivni yoz:
 [
   {{
     "q": "Savol matni",
@@ -742,7 +743,8 @@ MATN:
 {text}"""
 
     prompt_ru = f"""Составь {n} тестовых вопросов на русском языке по следующему тексту.
-Ответ дай ТОЛЬКО в виде чистого JSON — без ``` и без лишнего текста:
+Ответ дай ТОЛЬКО в виде чистого JSON — без ``` и без лишнего текста.
+Только JSON массив [ ]:
 [
   {{
     "q": "Текст вопроса",
@@ -757,41 +759,37 @@ ans = индекс правильного варианта (0=A, 1=B, 2=C, 3=D)
 {text}"""
 
     prompt = prompt_uz if lang == "uz" else prompt_ru
-    def _sync_call(p):
-        client   = anthropic.Anthropic(api_key=ANTHROPIC_KEY)
-        response = client.messages.create(
-            model      = "claude-sonnet-4-20250514",
-            max_tokens = 4096,
-            messages   = [{"role": "user", "content": p}]
-        )
-        return response.content[0].text.strip()
+
+    def _gemini_call(p):
+        genai.configure(api_key=GEMINI_KEY)
+        model    = genai.GenerativeModel("gemini-1.5-flash")
+        response = model.generate_content(p)
+        return response.text.strip()
 
     try:
         import concurrent.futures
         loop = asyncio.get_event_loop()
         with concurrent.futures.ThreadPoolExecutor() as pool:
-            raw = await loop.run_in_executor(pool, _sync_call, prompt)
-        # JSON tozalash — ``` bo'lsa olib tashla
+            raw = await loop.run_in_executor(pool, _gemini_call, prompt)
+
+        # JSON tozalash
         if "```" in raw:
             parts = raw.split("```")
             for part in parts:
                 part = part.strip()
-                if part.startswith("json"):
-                    part = part[4:].strip()
-                if part.startswith("["):
-                    raw = part; break
-        # Boshidagi [ va oxiridagi ] topish
+                if part.startswith("json"): part = part[4:].strip()
+                if part.startswith("["): raw = part; break
         start = raw.find("[")
         end   = raw.rfind("]")
         if start != -1 and end != -1:
             raw = raw[start:end+1]
+
         questions = json.loads(raw)
-        # Validatsiya
         valid = []
         for q in questions:
             if all(k in q for k in ("q","opts","ans","exp")) and len(q["opts"]) == 4:
                 valid.append(q)
-        log.info(f"ai_generate: {len(valid)} ta savol yaratildi")
+        log.info(f"gemini: {len(valid)} ta savol yaratildi")
         return valid[:n]
     except Exception as e:
         log.warning(f"ai_generate xato: {e}"); return []
@@ -807,7 +805,7 @@ async def handle_pdf(u: Update, ctx: ContextTypes.DEFAULT_TYPE):
 
     await ctx.bot.send_message(cid, txt(uid, "pdf_recv"))
 
-    if not ANTHROPIC_OK or not ANTHROPIC_KEY:
+    if not GEMINI_OK or not GEMINI_KEY:
         await ctx.bot.send_message(cid, txt(uid, "pdf_no_ai"),
                                    reply_markup=main_kb(uid)); return
     try:
