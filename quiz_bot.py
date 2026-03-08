@@ -761,15 +761,21 @@ ans = индекс правильного варианта (0=A, 1=B, 2=C, 3=D)
     prompt = prompt_uz if lang == "uz" else prompt_ru
 
     def _gemini_call(p):
-        genai.configure(api_key=GEMINI_KEY)
-        model    = genai.GenerativeModel("gemini-1.5-flash")
-        response = model.generate_content(p)
-        return response.text.strip()
+        try:
+            genai.configure(api_key=GEMINI_KEY)
+            model    = genai.GenerativeModel("gemini-2.0-flash")
+            response = model.generate_content(p)
+            raw      = response.text.strip()
+            log.info(f"gemini raw (first 200): {raw[:200]}")
+            return raw
+        except Exception as e:
+            log.error(f"gemini _sync xato: {e}")
+            raise
 
     try:
         import concurrent.futures
         loop = asyncio.get_event_loop()
-        with concurrent.futures.ThreadPoolExecutor() as pool:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
             raw = await loop.run_in_executor(pool, _gemini_call, prompt)
 
         # JSON tozalash
@@ -792,7 +798,8 @@ ans = индекс правильного варианта (0=A, 1=B, 2=C, 3=D)
         log.info(f"gemini: {len(valid)} ta savol yaratildi")
         return valid[:n]
     except Exception as e:
-        log.warning(f"ai_generate xato: {e}"); return []
+        log.error(f"ai_generate XATO: {type(e).__name__}: {e}")
+        return []
 
 async def handle_pdf(u: Update, ctx: ContextTypes.DEFAULT_TYPE):
     uid  = u.effective_user.id
