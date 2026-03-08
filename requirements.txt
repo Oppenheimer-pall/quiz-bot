@@ -1,4 +1,4 @@
 python-telegram-bot[job-queue]==21.6
 Pillow==10.4.0
-anthropic==0.25.0
+anthropic==0.49.0
 pypdf==4.2.0
