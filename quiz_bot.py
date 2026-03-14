@@ -1253,21 +1253,19 @@ async def cb_topic(u: Update, ctx: ContextTypes.DEFAULT_TYPE):
 async def poll_answer(u: Update, ctx: ContextTypes.DEFAULT_TYPE):
     a = u.poll_answer; uid = a.user.id
     if uid not in user_state: return
+    # Bo'sh javob (open_period tugagach Telegram yuboradigan signal) — e'tibor berma
+    if not a.option_ids: return
     st = user_state[uid]; pid = a.poll_id
     if pid not in st["poll_map"]: return
+    # Timer jobni bekor qil
     for job in ctx.job_queue.get_jobs_by_name(f"t_{uid}"):
         job.schedule_removal()
-    if (a.option_ids[0] if a.option_ids else -1) == st["poll_map"][pid]:
+    # Javobni tekshirish
+    if a.option_ids[0] == st["poll_map"][pid]:
         st["score"] += 1
-    st["index"] += 1; del st["poll_map"][pid]
-    # Joblarni bekor qilish
-    for job in ctx.job_queue.get_jobs_by_name(f"t_{uid}"):
-        job.schedule_removal()
-    # Timer xabarni o'chirish
-    try:
-        await ctx.bot.delete_message(st["cid"], st.get("timer_msg_id"))
-    except Exception:
-        pass
+    st["index"] += 1
+    del st["poll_map"][pid]
+    # Keyingi savol
     await send_q(ctx, uid, st["cid"])
 
 async def show_top_menu(uid, cid, ctx):
