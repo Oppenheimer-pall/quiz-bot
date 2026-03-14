@@ -1067,43 +1067,11 @@ def resume_kb(uid):
         InlineKeyboardButton(TX[lang]["btn_stop"],   callback_data="quiz_stop"),
     ]])
 
-async def update_timer_msg(context):
-    """Timer xabarini yangilash (har 5 sekundda)"""
-    d   = context.job.data
-    uid = d["uid"]
-    st  = user_state.get(uid)
-    if not st or st.get("paused"): return
-    tid = st.get("timer_msg_id")
-    cid = st.get("cid")
-    if not tid or not cid: return
-    elapsed  = int(datetime.now().timestamp()) - st.get("timer_start", 0)
-    sec_left = max(0, TIMER_SEC - elapsed)
-    bar  = make_timer_bar(sec_left)
-    idx  = st["index"]; n = len(st["qs"])
-    try:
-        await context.bot.edit_message_text(
-            chat_id    = cid,
-            message_id = tid,
-            text       = txt(uid, "timer_msg", i=idx+1, n=n, bar=bar, sec=sec_left),
-            reply_markup = timer_kb(uid)
-        )
-    except Exception:
-        pass
-
 async def timer_job(context):
     d = context.job.data; uid = d["uid"]; pid = d["pid"]
     if uid not in user_state: return
     st = user_state[uid]
-    if st.get("paused"): return   # pauzada bo'lsa o'tkazib yubor
     if pid not in st["poll_map"]: return
-    # update job ni to'xtatish
-    for job in context.job_queue.get_jobs_by_name(f"upd_{uid}"):
-        job.schedule_removal()
-    # timer xabarni o'chirish
-    try:
-        await context.bot.delete_message(st["cid"], st.get("timer_msg_id"))
-    except Exception:
-        pass
     del st["poll_map"][pid]; st["index"] += 1
     await context.bot.send_message(st["cid"], txt(uid, "time_up"))
     await send_q(context, uid, st["cid"])
@@ -1133,34 +1101,27 @@ async def send_q(context, uid, cid):
         await start_feedback(uid, saved_key, cid, context)
         return
     q   = qs[idx]
-    # Timer xabar — poll dan oldin yuboramiz
-    now      = int(datetime.now().timestamp())
-    bar      = make_timer_bar(TIMER_SEC)
-    timer_m  = await context.bot.send_message(
-        cid,
-        text = txt(uid, "timer_msg", i=idx+1, n=len(qs), bar=bar, sec=TIMER_SEC),
-        reply_markup = timer_kb(uid)
-    )
-    st["timer_msg_id"] = timer_m.message_id
-    st["timer_start"]  = now
-    st["paused"]       = False
 
+    # Eski joblarni tozalash
+    for job in context.job_queue.get_jobs_by_name(f"t_{uid}"):
+        job.schedule_removal()
+
+    # open_period — Telegram o'z ichki timerini ko'rsatadi (rasmga o'xshash)
     msg = await context.bot.send_poll(
         cid,
-        question=f"❓ {txt(uid,'q_label',i=idx+1,n=len(qs))}\n\n{q['q']}",
+        question=f"[{idx+1}/{len(qs)}] {q['q']}",
         options=q["opts"], type="quiz",
         correct_option_id=q["ans"], explanation=q["exp"],
+        open_period=TIMER_SEC,
         is_anonymous=False,
         reply_markup=ReplyKeyboardRemove())
     st["poll_map"][msg.poll.id] = q["ans"]
     st["poll_msg_id"]  = msg.message_id
+    st["paused"]       = False
 
-    # Countdown job (har 5 sekundda timer yangilanadi)
-    context.job_queue.run_repeating(update_timer_msg, interval=5, first=5,
-        name=f"upd_{uid}", data={"uid": uid})
-    # Asosiy timer
-    context.job_queue.run_once(timer_job, TIMER_SEC,
-        name=f"t_{uid}", data={"uid":uid,"pid":msg.poll.id})
+    # Timeout: poll yopilgach keyingi savolga o'tish
+    context.job_queue.run_once(timer_job, TIMER_SEC + 2,
+        name=f"t_{uid}", data={"uid": uid, "pid": msg.poll.id})
 
 # ── HANDLERS ──────────────────────────────────────────────
 async def cmd_start(u: Update, ctx: ContextTypes.DEFAULT_TYPE):
@@ -1301,8 +1262,6 @@ async def poll_answer(u: Update, ctx: ContextTypes.DEFAULT_TYPE):
     st["index"] += 1; del st["poll_map"][pid]
     # Joblarni bekor qilish
     for job in ctx.job_queue.get_jobs_by_name(f"t_{uid}"):
-        job.schedule_removal()
-    for job in ctx.job_queue.get_jobs_by_name(f"upd_{uid}"):
         job.schedule_removal()
     # Timer xabarni o'chirish
     try:
@@ -1632,12 +1591,22 @@ async def cb_quiz_ctrl(u: Update, ctx: ContextTypes.DEFAULT_TYPE):
     data = q.data
     st   = user_state.get(uid)
 
+    if data == "quiz_stop":
+        if not st: return
+        for job in ctx.job_queue.get_jobs_by_name(f"t_{uid}"):
+            job.schedule_removal()
+        del user_state[uid]
+        await ctx.bot.send_message(cid, txt(uid, "stop_confirm"),
+                                   reply_markup=main_kb(uid))
+
+    elif data == "quiz_pause_disabled":  # eski kod — ishlatilmaydi
+        if not st or st.get("paused"): return
+        pass  # open_period bilan pause mumkin emas
+
     if data == "quiz_pause":
         if not st or st.get("paused"): return
         # Joblarni to'xtatish
         for job in ctx.job_queue.get_jobs_by_name(f"t_{uid}"):
-            job.schedule_removal()
-        for job in ctx.job_queue.get_jobs_by_name(f"upd_{uid}"):
             job.schedule_removal()
         # Qolgan vaqtni hisoblash
         elapsed  = int(datetime.now().timestamp()) - st.get("timer_start", 0)
@@ -1658,8 +1627,6 @@ async def cb_quiz_ctrl(u: Update, ctx: ContextTypes.DEFAULT_TYPE):
         st["timer_start"] = now - (TIMER_SEC - sec_left)
         st["paused"]      = False
         # Joblarni qayta ishga tushirish
-        ctx.job_queue.run_repeating(update_timer_msg, interval=5, first=2,
-            name=f"upd_{uid}", data={"uid": uid})
         ctx.job_queue.run_once(timer_job, sec_left,
             name=f"t_{uid}",
             data={"uid": uid, "pid": list(st["poll_map"].keys())[-1] if st["poll_map"] else ""})
@@ -1675,8 +1642,6 @@ async def cb_quiz_ctrl(u: Update, ctx: ContextTypes.DEFAULT_TYPE):
         if not st: return
         # Barcha joblarni to'xtatish
         for job in ctx.job_queue.get_jobs_by_name(f"t_{uid}"):
-            job.schedule_removal()
-        for job in ctx.job_queue.get_jobs_by_name(f"upd_{uid}"):
             job.schedule_removal()
         # Timer xabarni o'chirish
         try:
