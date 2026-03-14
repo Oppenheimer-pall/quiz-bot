@@ -1073,6 +1073,7 @@ async def timer_job(context):
     st = user_state[uid]
     if pid not in st["poll_map"]: return
     del st["poll_map"][pid]; st["index"] += 1
+    st["skipped"] = st.get("skipped", 0) + 1
     await context.bot.send_message(st["cid"], txt(uid, "time_up"))
     await send_q(context, uid, st["cid"])
 
@@ -1082,12 +1083,49 @@ async def send_q(context, uid, cid):
     if not st: return
     idx = st["index"]; qs = st["qs"]
     if idx >= len(qs):
-        s   = st["score"]; tot = len(qs)
-        pct = db_save_result(uid, st["key"], s, tot)
-        lang = user_lang.get(uid,"uz")
-        await context.bot.send_message(cid,
-            txt(uid,"result",s=s,total=tot,p=pct,emoji=eg(pct),grade=grade_t(uid,pct)),
-            reply_markup=main_kb(uid))
+        import time as _t
+        s       = st["score"]; tot = len(qs)
+        skipped = st.get("skipped", 0)
+        wrong   = tot - s - skipped
+        elapsed = int(_t.time() - st.get("start_time", _t.time()))
+        mins, secs = divmod(elapsed, 60)
+        pct     = db_save_result(uid, st["key"], s, tot)
+        rank, participants = db_rank(uid, st["key"], pct)
+        lang    = user_lang.get(uid, "uz")
+        topic   = tname(st["key"], uid)
+
+        if lang == "uz":
+            time_str  = f"{mins} daqiqa {secs} soniya" if mins else f"{secs} soniya"
+            rank_line = (f"\n{participants} tadan {rank}-o'rin. Siz ushbu testda ishtirok etgan "
+                         f"{round((participants-rank)/participants*100) if participants>1 else 0}% "
+                         f"odamlardan yuqoriroq ball to'pladingiz.") if participants > 1 else ""
+            result_text = (
+                f"🏁 \"{topic}\" testi yakunlandi!\n\n"
+                f"Siz {tot} ta savolga javob berdingiz:\n"
+                f"✅ To'g'ri — **{s}**\n"
+                f"❌ Xato — **{wrong}**\n"
+                f"⏳ Tashlab ketilgan — **{skipped}**\n"
+                f"🕐 {time_str}"
+                f"{rank_line}"
+            )
+        else:
+            time_str  = f"{mins} мин {secs} сек" if mins else f"{secs} сек"
+            rank_line = (f"\n{participants} из {rank}-е место. Вы набрали больше баллов, чем "
+                         f"{round((participants-rank)/participants*100) if participants>1 else 0}% "
+                         f"участников.") if participants > 1 else ""
+            result_text = (
+                f"🏁 Тест \"{topic}\" завершён!\n\n"
+                f"Вы ответили на {tot} вопросов:\n"
+                f"✅ Правильно — **{s}**\n"
+                f"❌ Неправильно — **{wrong}**\n"
+                f"⏳ Пропущено — **{skipped}**\n"
+                f"🕐 {time_str}"
+                f"{rank_line}"
+            )
+
+        await context.bot.send_message(cid, result_text,
+            parse_mode="Markdown", reply_markup=main_kb(uid))
+
         c   = sqlite3.connect(DB_PATH)
         row = c.execute("SELECT full_name FROM users WHERE user_id=?", (uid,)).fetchone()
         c.close()
@@ -1097,7 +1135,6 @@ async def send_q(context, uid, cid):
                 caption=f"🎓 {row[0] if row else 'User'} — {s}/{tot} ({pct}%)")
         saved_key = st["key"]
         del user_state[uid]
-        # Feedback so'rash
         await start_feedback(uid, saved_key, cid, context)
         return
     q   = qs[idx]
@@ -1244,8 +1281,10 @@ async def cb_topic(u: Update, ctx: ContextTypes.DEFAULT_TYPE):
     q = u.callback_query; await q.answer()
     uid = q.from_user.id; key = q.data[2:]
     qs  = get_qs(key)
-    user_state[uid] = {"qs":qs,"index":0,"score":0,
-                       "poll_map":{},"key":key,"cid":q.message.chat_id}
+    import time as _t
+    user_state[uid] = {"qs":qs,"index":0,"score":0,"skipped":0,
+                       "poll_map":{},"key":key,"cid":q.message.chat_id,
+                       "start_time": _t.time()}
     await q.edit_message_text(
         txt(uid,"quiz_start",topic=tname(key,uid),n=len(qs),timer=TIMER_SEC))
     await send_q(ctx, uid, q.message.chat_id)
@@ -1471,15 +1510,18 @@ async def handle_pdf(u: Update, ctx: ContextTypes.DEFAULT_TYPE):
 
         fname = doc.file_name[:30]
         key   = f"pdf_{uid}_{int(datetime.now().timestamp())}"
+        import time as _t2
         user_state[uid] = {
             "qs"      : questions,
             "index"   : 0,
             "score"   : 0,
+            "skipped" : 0,
             "poll_map": {},
             "key"     : key,
             "cid"     : cid,
             "is_pdf"  : True,
             "pdf_name": fname,
+            "start_time": _t2.time(),
         }
         await ctx.bot.send_message(cid,
             txt(uid, "pdf_done", n=len(questions)))
