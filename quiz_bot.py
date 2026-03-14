@@ -1651,12 +1651,54 @@ async def cb_quiz_ctrl(u: Update, ctx: ContextTypes.DEFAULT_TYPE):
                                    reply_markup=main_kb(uid))
 
 # ── MAIN ──────────────────────────────────────────────────
+async def post_init(app):
+    """Bot ishga tushganda command menyusini o'rnatish"""
+    from telegram import BotCommand, BotCommandScopeDefault
+    uz_commands = [
+        BotCommand("start",     "🏠 Bosh menyu"),
+        BotCommand("tests",     "📝 Testlar bo'limi"),
+        BotCommand("top",       "🏆 Reyting"),
+        BotCommand("stats",     "📊 Statistika"),
+        BotCommand("stop",      "🚫 Testni to'xtatish"),
+        BotCommand("help",      "ℹ️ Yordam"),
+    ]
+    await app.bot.set_my_commands(uz_commands, scope=BotCommandScopeDefault())
+
+async def cmd_tests(u: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    """Testlar bo'limiga to'g'ridan o'tish"""
+    uid = u.effective_user.id
+    lang = user_lang.get(uid, "uz")
+    from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+    kb = []
+    for cat_key, cat in CATEGORIES.items():
+        status = "" if cat["active"] else " ⏳"
+        kb.append([InlineKeyboardButton(
+            f"{cat['emoji']} {cat[lang]}{status}",
+            callback_data=f"cat_{cat_key}"
+        )])
+    await u.message.reply_text(txt(uid, "main_menu"), reply_markup=InlineKeyboardMarkup(kb))
+
+async def cmd_stop_quiz(u: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    """/stop — aktiv testni to'xtatish"""
+    uid = u.effective_user.id
+    if uid in user_state:
+        for job in ctx.job_queue.get_jobs_by_name(f"t_{uid}"):
+            job.schedule_removal()
+        del user_state[uid]
+        await u.message.reply_text(txt(uid, "stop_confirm"), reply_markup=main_kb(uid))
+    else:
+        lang = user_lang.get(uid, "uz")
+        msg = "Hozir aktiv test yo'q." if lang == "uz" else "Нет активного теста."
+        await u.message.reply_text(msg, reply_markup=main_kb(uid))
+
 def main():
     init_db()
-    app = Application.builder().token(TOKEN).build()
+    app = Application.builder().token(TOKEN).post_init(post_init).build()
     app.add_handler(CommandHandler("start",     cmd_start))
+    app.add_handler(CommandHandler("tests",     cmd_tests))
     app.add_handler(CommandHandler("top",       cmd_top))
     app.add_handler(CommandHandler("stats",     cmd_stats))
+    app.add_handler(CommandHandler("stop",      cmd_stop_quiz))
     app.add_handler(CommandHandler("admin",     cmd_admin))
     app.add_handler(CommandHandler("broadcast", cmd_broadcast))
     app.add_handler(CommandHandler("addq",      cmd_addq))
