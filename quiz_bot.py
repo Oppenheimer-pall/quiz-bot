@@ -73,26 +73,16 @@ TX = {
         "addq_err"    : "❌ Format xato.",
         "all_mix"     : "🔀 Barcha aralash",
         "back_cat"    : "⬅️ Orqaga",
-        "help"        : "📌 Buyruqlar:\n/start — Bosh menyu\n/tests — Testlar\n/mystats — Mening progressim\n/top — Reyting\n/reminder — Kunlik eslatma\n/stop — Testni to'xtatish",
+        "help"        : "📌 Buyruqlar:\n/start — Bosh menyu\n/tests — Testlar\n/mystats — Mening progressim\n/top — Reyting\n/stop — Testni to'xtatish",
         # mystats
-        "mystats_title": "📊 <b>Mening progressim</b>\n",
-        "mystats_row"  : "{bar} <b>{pct}%</b> — {topic} ({cnt} marta)\n",
-        "mystats_none" : "Hali hech qanday test ishlanmagan.",
-        "mystats_weak" : "\n🎯 <b>Eng zaif mavzu:</b> {topic}\n💡 Uni qayta ishlashni tavsiya qilamiz!",
-        # wrong answers
-        "wrong_btn"    : "❌ Xatolarni qayta ishlash ({n} ta)",
-        "wrong_start"  : "🔁 Xato qilgan {n} ta savol qayta boshlanmoqda...",
-        "wrong_none"   : "✅ Xato yo'q! Barcha savollar to'g'ri javoblandi.",
-        # reminder
-        "remind_set"   : "🔔 Eslatma o'rnatildi: har kuni <b>{h:02d}:{m:02d}</b> da",
-        "remind_off"   : "🔕 Eslatma o'chirildi.",
-        "remind_msg"   : "📚 Assalomu alaykum! Bugun test ishladingizmi?\n\n/tests — Testlarga o'tish",
-        "remind_help"  : "Foydalanish: /reminder 09:00\nO'chirish: /reminder off",
-        # group quiz
-        "group_start"  : "👥 <b>Guruh testi boshlandi!</b>\nMavzu: {topic}\nSavollar: {n} ta\n\nHamma qatnashishi mumkin!",
-        "group_join"   : "✅ {name} qo'shildi!",
-        "group_result" : "🏆 <b>Guruh natijalar:</b>\n",
-        "group_row"    : "{medal} {name} — {pct}% ({s}/{t})\n",
+        "mystats_title": "📊 <b>Mening progressim:</b>",
+        "mystats_topic": "{bar} <b>{pct}%</b>  {topic} ({cnt} marta)",
+        "mystats_empty": "Hali hech qanday test ishlanmagan.",
+        "mystats_best" : "\n🎯 Eng zaif mavzu: <b>{topic}</b>",
+        # retry (xato savollar)
+        "btn_retry"   : "🔁 Xato savollarni qayta ishlash",
+        "no_wrong"    : "✅ Barcha savollarga to'g'ri javob berdingiz!",
+        "retry_start" : "🔁 {n} ta xato savol qayta boshlanmoqda...",
         # PDF
         "pdf_recv"    : "📄 PDF qabul qilindi! AI test tuzmoqda... ⏳ (30-60 soniya)",
         "pdf_no_text" : "❌ PDF dan matn o'qib bo'lmadi.",
@@ -186,13 +176,6 @@ TX = {
         "auto_pause"  : "⏸ <b>{n} вопросов пропущено подряд.</b>\n\nТест приостановлен.\nНажмите кнопку для продолжения.",
         "btn_continue": "▶️ Продолжить",
         "btn_quit"    : "❌ Завершить тест",
-        "btn_retry"   : "🔁 Xato savollarni qayta ishlash",
-        "no_wrong"    : "✅ Barcha savollarga to'g'ri javob berdingiz!",
-        "retry_start" : "🔁 {n} ta xato savol qayta boshlanmoqda...",
-        "mystats_title": "📊 <b>Sizning progressingiz:</b>",
-        "mystats_empty": "Hali hech qanday test ishlanmagan.",
-        "mystats_topic": "{bar} <b>{pct}%</b>  {topic} ({cnt} marta)",
-        "mystats_best" : "\n🎯 Eng zaif mavzu: <b>{topic}</b>",
         "btn_retry"   : "🔁 Переработать ошибки",
         "no_wrong"    : "✅ Вы правильно ответили на все вопросы!",
         "retry_start" : "🔁 Начинаем {n} вопросов с ошибками...",
@@ -1235,11 +1218,16 @@ async def timer_job(context):
     d = context.job.data; uid = d["uid"]; pid = d["pid"]
     if uid not in user_state: return
     st = user_state[uid]
+    # Agar user allaqachon javob bergan bo'lsa (poll_map bo'sh) — e'tibor berma
     if pid not in st["poll_map"]: return
+    # Agar send_q allaqachon ishga tushgan bo'lsa — e'tibor berma
+    if st.get("processing"): return
+    st["processing"] = True
     del st["poll_map"][pid]; st["index"] += 1
     st["skipped"]       = st.get("skipped", 0) + 1
     st["consec_skip"]   = st.get("consec_skip", 0) + 1
-    # Auto-pause: ketma-ket AUTO_PAUSE ta savol o'tkazilsa
+    st["processing"]    = False
+    # Auto-pause
     if st["consec_skip"] >= AUTO_PAUSE:
         st["paused"] = True
         lang     = user_lang.get(uid, "uz")
@@ -1256,11 +1244,8 @@ async def timer_job(context):
             [InlineKeyboardButton(btn1, callback_data="quiz_continue")],
             [InlineKeyboardButton(btn2, callback_data="quiz_stop")],
         ])
-        await context.bot.send_message(
-            st["cid"], msg, reply_markup=kb
-        )
+        await context.bot.send_message(st["cid"], msg, reply_markup=kb)
         return
-    # Normal o'tkazish — keyingi savolga
     await context.bot.send_message(st["cid"], txt(uid, "time_up"))
     await send_q(context, uid, st["cid"])
 
@@ -1268,7 +1253,7 @@ async def timer_job(context):
 async def send_q(context, uid, cid):
     st = user_state.get(uid)
     if not st: return
-    if st.get("paused"): return   # Auto-pause yoki manual pause — hech narsa yuborma
+    if st.get("paused"): return
     idx = st["index"]; qs = st["qs"]
     if idx >= len(qs):
         import time as _t
@@ -1524,10 +1509,12 @@ async def cb_topic(u: Update, ctx: ContextTypes.DEFAULT_TYPE):
 async def poll_answer(u: Update, ctx: ContextTypes.DEFAULT_TYPE):
     a = u.poll_answer; uid = a.user.id
     if uid not in user_state: return
-    # Bo'sh javob (open_period tugagach Telegram yuboradigan signal) — e'tibor berma
     if not a.option_ids: return
     st = user_state[uid]; pid = a.poll_id
     if pid not in st["poll_map"]: return
+    # Lock — ikki marta ishga tushmasin
+    if st.get("processing"): return
+    st["processing"] = True
     # Timer jobni bekor qil
     for job in ctx.job_queue.get_jobs_by_name(f"t_{uid}"):
         job.schedule_removal()
@@ -1536,13 +1523,13 @@ async def poll_answer(u: Update, ctx: ContextTypes.DEFAULT_TYPE):
     if a.option_ids[0] == correct_ans:
         st["score"] += 1
     else:
-        # Xato javob — savolni yig'ib qo'yish
         idx_now = st["index"]
         if idx_now < len(st["qs"]):
             st.setdefault("wrong_list", []).append(st["qs"][idx_now])
-    st["index"]      += 1
+    st["index"]       += 1
     st["consec_skip"]  = 0
     del st["poll_map"][pid]
+    st["processing"]   = False
     await send_q(ctx, uid, st["cid"])
 
 async def show_top_menu(uid, cid, ctx):
