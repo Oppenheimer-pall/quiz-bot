@@ -40,7 +40,8 @@ GEMINI_KEY     = os.getenv("GEMINI_API_KEY", "")
 _adm      = os.getenv("ADMIN_IDS", "0")
 ADMIN_IDS = [int(x) for x in _adm.split(",") if x.strip().isdigit()]
 DB_PATH   = "quiz.db"
-TIMER_SEC = 30
+TIMER_SEC  = 30
+AUTO_PAUSE = 3   # Ketma-ket o'tkazib yuborilgan savollar soni — auto-pause
 
 logging.basicConfig(level=logging.INFO,
     format="%(asctime)s | %(levelname)s | %(message)s")
@@ -144,6 +145,10 @@ TX = {
         "btn_resume"  : "▶️ Продолжить",
         "btn_stop"    : "🚫 Остановить тест",
         "stop_confirm": "✅ Тест остановлен.",
+        "auto_pause"  : "⏸ <b>{n} вопросов пропущено подряд.</b>\n\nТест приостановлен.\nНажмите кнопку для продолжения.",
+        "btn_continue": "▶️ Продолжить",
+        "btn_quit"    : "❌ Завершить тест",
+        "total_stats" : "📊 <b>Ваша общая статистика:</b>\n\n🏁 Всего тестов: <b>{tests}</b>\n✅ Средний балл: <b>{avg}%</b>\n🏆 Лучший результат: <b>{best}%</b>\n\n👥 Место среди участников: <b>{rank}</b> (из {total})",
         "fb_thumb_q"  : "Тест был полезным?",
         "fb_star_q"   : "Сколько звёзд?",
         "fb_comment_q": "💬 Напишите комментарий (или /skip):",
@@ -928,6 +933,22 @@ def db_save_result(uid, topic_key, score, total):
         (uid, topic_key, score, total, pct, datetime.now().isoformat()))
     c.commit(); c.close(); return pct
 
+def db_total_stats(uid):
+    """Foydalanuvchining umumiy statistikasi va global reytingi"""
+    c = sqlite3.connect(DB_PATH)
+    row = c.execute("""SELECT COUNT(*), AVG(pct), MAX(pct)
+        FROM results WHERE user_id=?""", (uid,)).fetchone()
+    tests, avg, best = row[0] or 0, round(row[1] or 0), row[2] or 0
+    # Global rank — barcha foydalanuvchilar orasida eng yaxshi natija bo'yicha
+    total_users = c.execute("SELECT COUNT(DISTINCT user_id) FROM results").fetchone()[0]
+    rank = c.execute("""SELECT COUNT(DISTINCT user_id) FROM results
+        WHERE user_id != ? AND
+        (SELECT MAX(pct) FROM results WHERE user_id=results.user_id) >
+        (SELECT MAX(pct) FROM results WHERE user_id=?)""",
+        (uid, uid)).fetchone()[0] + 1
+    c.close()
+    return tests, avg, best, rank, total_users
+
 def db_leaderboard(key="all"):
     c = sqlite3.connect(DB_PATH)
     if key == "all":
@@ -1073,7 +1094,23 @@ async def timer_job(context):
     st = user_state[uid]
     if pid not in st["poll_map"]: return
     del st["poll_map"][pid]; st["index"] += 1
-    st["skipped"] = st.get("skipped", 0) + 1
+    st["skipped"]       = st.get("skipped", 0) + 1
+    st["consec_skip"]   = st.get("consec_skip", 0) + 1
+    # Auto-pause: ketma-ket AUTO_PAUSE ta savol o'tkazilsa
+    if st["consec_skip"] >= AUTO_PAUSE:
+        st["paused"] = True
+        lang = user_lang.get(uid, "uz")
+        kb = InlineKeyboardMarkup([[
+            InlineKeyboardButton(TX[lang]["btn_continue"], callback_data="quiz_continue"),
+            InlineKeyboardButton(TX[lang]["btn_quit"],     callback_data="quiz_stop"),
+        ]])
+        await context.bot.send_message(
+            st["cid"],
+            TX[lang]["auto_pause"].format(n=AUTO_PAUSE),
+            parse_mode   = "HTML",
+            reply_markup = kb
+        )
+        return
     await context.bot.send_message(st["cid"], txt(uid, "time_up"))
     await send_q(context, uid, st["cid"])
 
@@ -1133,6 +1170,16 @@ async def send_q(context, uid, cid):
         if cert:
             await context.bot.send_photo(cid, photo=cert,
                 caption=f"🎓 {row[0] if row else 'User'} — {s}/{tot} ({pct}%)")
+        # Umumiy statistika
+        tests, avg, best, rank, total_users = db_total_stats(uid)
+        if tests > 0:
+            lang = user_lang.get(uid, "uz")
+            stats_text = TX[lang]["total_stats"].format(
+                tests=tests, avg=avg, best=best,
+                rank=rank, total=total_users
+            )
+            await context.bot.send_message(cid, stats_text, parse_mode="HTML")
+
         saved_key = st["key"]
         del user_state[uid]
         await start_feedback(uid, saved_key, cid, context)
@@ -1316,9 +1363,9 @@ async def poll_answer(u: Update, ctx: ContextTypes.DEFAULT_TYPE):
     # Javobni tekshirish
     if a.option_ids[0] == st["poll_map"][pid]:
         st["score"] += 1
-    st["index"] += 1
+    st["index"]      += 1
+    st["consec_skip"]  = 0   # Javob berdi — ketma-ket skip counter reset
     del st["poll_map"][pid]
-    # Keyingi savol
     await send_q(ctx, uid, st["cid"])
 
 async def show_top_menu(uid, cid, ctx):
@@ -1645,7 +1692,14 @@ async def cb_quiz_ctrl(u: Update, ctx: ContextTypes.DEFAULT_TYPE):
     data = q.data
     st   = user_state.get(uid)
 
-    if data == "quiz_stop":
+    if data == "quiz_continue":
+        if not st: return
+        st["paused"]      = False
+        st["consec_skip"] = 0
+        await q.edit_message_text("▶️ Davom etmoqda...")
+        await send_q(ctx, uid, cid)
+
+    elif data == "quiz_stop":
         if not st: return
         for job in ctx.job_queue.get_jobs_by_name(f"t_{uid}"):
             job.schedule_removal()
