@@ -73,7 +73,26 @@ TX = {
         "addq_err"    : "❌ Format xato.",
         "all_mix"     : "🔀 Barcha aralash",
         "back_cat"    : "⬅️ Orqaga",
-        "help"        : "📌 Buyruqlar:\n/start — Bosh menyu\n/top — Reyting\n/stats — Statistika\n/admin — Admin\n/feedback — Fikrlar (admin)",
+        "help"        : "📌 Buyruqlar:\n/start — Bosh menyu\n/tests — Testlar\n/mystats — Mening progressim\n/top — Reyting\n/reminder — Kunlik eslatma\n/stop — Testni to'xtatish",
+        # mystats
+        "mystats_title": "📊 <b>Mening progressim</b>\n",
+        "mystats_row"  : "{bar} <b>{pct}%</b> — {topic} ({cnt} marta)\n",
+        "mystats_none" : "Hali hech qanday test ishlanmagan.",
+        "mystats_weak" : "\n🎯 <b>Eng zaif mavzu:</b> {topic}\n💡 Uni qayta ishlashni tavsiya qilamiz!",
+        # wrong answers
+        "wrong_btn"    : "❌ Xatolarni qayta ishlash ({n} ta)",
+        "wrong_start"  : "🔁 Xato qilgan {n} ta savol qayta boshlanmoqda...",
+        "wrong_none"   : "✅ Xato yo'q! Barcha savollar to'g'ri javoblandi.",
+        # reminder
+        "remind_set"   : "🔔 Eslatma o'rnatildi: har kuni <b>{h:02d}:{m:02d}</b> da",
+        "remind_off"   : "🔕 Eslatma o'chirildi.",
+        "remind_msg"   : "📚 Assalomu alaykum! Bugun test ishladingizmi?\n\n/tests — Testlarga o'tish",
+        "remind_help"  : "Foydalanish: /reminder 09:00\nO'chirish: /reminder off",
+        # group quiz
+        "group_start"  : "👥 <b>Guruh testi boshlandi!</b>\nMavzu: {topic}\nSavollar: {n} ta\n\nHamma qatnashishi mumkin!",
+        "group_join"   : "✅ {name} qo'shildi!",
+        "group_result" : "🏆 <b>Guruh natijalar:</b>\n",
+        "group_row"    : "{medal} {name} — {pct}% ({s}/{t})\n",
         # PDF
         "pdf_recv"    : "📄 PDF qabul qilindi! AI test tuzmoqda... ⏳ (30-60 soniya)",
         "pdf_no_text" : "❌ PDF dan matn o'qib bo'lmadi.",
@@ -129,7 +148,26 @@ TX = {
         "addq_err"    : "❌ Неверный формат.",
         "all_mix"     : "🔀 Все вперемешку",
         "back_cat"    : "⬅️ Назад",
-        "help"        : "📌 Команды:\n/start — Меню\n/top — Рейтинг\n/stats — Статистика\n/admin — Админ\n/feedback — Отзывы (admin)",
+        "help"        : "📌 Команды:\n/start — Меню\n/tests — Тесты\n/mystats — Мой прогресс\n/top — Рейтинг\n/reminder — Напоминание\n/stop — Остановить тест",
+        # mystats
+        "mystats_title": "📊 <b>Мой прогресс</b>\n",
+        "mystats_row"  : "{bar} <b>{pct}%</b> — {topic} ({cnt} раз)\n",
+        "mystats_none" : "Тестов ещё не было.",
+        "mystats_weak" : "\n🎯 <b>Слабая тема:</b> {topic}\n💡 Рекомендуем повторить!",
+        # wrong answers
+        "wrong_btn"    : "❌ Разобрать ошибки ({n} шт)",
+        "wrong_start"  : "🔁 Начинаем {n} вопросов с ошибками...",
+        "wrong_none"   : "✅ Нет ошибок! Все ответы правильные.",
+        # reminder
+        "remind_set"   : "🔔 Напоминание установлено: каждый день в <b>{h:02d}:{m:02d}</b>",
+        "remind_off"   : "🔕 Напоминание отключено.",
+        "remind_msg"   : "📚 Привет! Вы сегодня проходили тест?\n\n/tests — К тестам",
+        "remind_help"  : "Использование: /reminder 09:00\nОтключить: /reminder off",
+        # group quiz
+        "group_start"  : "👥 <b>Групповой тест начат!</b>\nТема: {topic}\nВопросов: {n}\n\nВсе могут участвовать!",
+        "group_join"   : "✅ {name} присоединился!",
+        "group_result" : "🏆 <b>Результаты группы:</b>\n",
+        "group_row"    : "{medal} {name} — {pct}% ({s}/{t})\n",
         # PDF
         "pdf_recv"    : "📄 PDF получен! AI составляет тест... ⏳ (30-60 секунд)",
         "pdf_no_text" : "❌ Не удалось прочитать текст из PDF.",
@@ -148,6 +186,20 @@ TX = {
         "auto_pause"  : "⏸ <b>{n} вопросов пропущено подряд.</b>\n\nТест приостановлен.\nНажмите кнопку для продолжения.",
         "btn_continue": "▶️ Продолжить",
         "btn_quit"    : "❌ Завершить тест",
+        "btn_retry"   : "🔁 Xato savollarni qayta ishlash",
+        "no_wrong"    : "✅ Barcha savollarga to'g'ri javob berdingiz!",
+        "retry_start" : "🔁 {n} ta xato savol qayta boshlanmoqda...",
+        "mystats_title": "📊 <b>Sizning progressingiz:</b>",
+        "mystats_empty": "Hali hech qanday test ishlanmagan.",
+        "mystats_topic": "{bar} <b>{pct}%</b>  {topic} ({cnt} marta)",
+        "mystats_best" : "\n🎯 Eng zaif mavzu: <b>{topic}</b>",
+        "btn_retry"   : "🔁 Переработать ошибки",
+        "no_wrong"    : "✅ Вы правильно ответили на все вопросы!",
+        "retry_start" : "🔁 Начинаем {n} вопросов с ошибками...",
+        "mystats_title": "📊 <b>Ваш прогресс:</b>",
+        "mystats_empty": "Вы ещё не прошли ни одного теста.",
+        "mystats_topic": "{bar} <b>{pct}%</b>  {topic} ({cnt} раз)",
+        "mystats_best" : "\n🎯 Слабая тема: <b>{topic}</b>",
         "total_stats" : "📊 <b>Ваша общая статистика:</b>\n\n🏁 Всего тестов: <b>{tests}</b>\n✅ Средний балл: <b>{avg}%</b>\n🏆 Лучший результат: <b>{best}%</b>\n\n👥 Место среди участников: <b>{rank}</b> (из {total})",
         "fb_thumb_q"  : "Тест был полезным?",
         "fb_star_q"   : "Сколько звёзд?",
@@ -906,6 +958,24 @@ def init_db():
             cat TEXT, topic_key TEXT, question TEXT,
             opt_a TEXT, opt_b TEXT, opt_c TEXT, opt_d TEXT,
             correct INTEGER, explanation TEXT);
+        CREATE TABLE IF NOT EXISTS wrong_qs(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER, topic_key TEXT,
+            question TEXT, opts TEXT, ans INTEGER, exp TEXT,
+            created_at TEXT);
+        CREATE TABLE IF NOT EXISTS reminders(
+            user_id INTEGER PRIMARY KEY,
+            hour INTEGER, minute INTEGER, active INTEGER DEFAULT 1);
+        CREATE TABLE IF NOT EXISTS group_quiz(
+            session_id TEXT PRIMARY KEY,
+            chat_id INTEGER, topic_key TEXT,
+            created_by INTEGER, status TEXT DEFAULT 'active',
+            created_at TEXT);
+        CREATE TABLE IF NOT EXISTS group_answers(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            session_id TEXT, user_id INTEGER, full_name TEXT,
+            score INTEGER DEFAULT 0, total INTEGER DEFAULT 0,
+            finished_at TEXT);
     """)
     c.commit(); c.close()
 
@@ -948,6 +1018,79 @@ def db_total_stats(uid):
         (uid, uid)).fetchone()[0] + 1
     c.close()
     return tests, avg, best, rank, total_users
+
+# ── WRONG QS HELPERS ──────────────────────────────────────
+def db_save_wrong(uid, topic_key, wrong_list):
+    """Xato savollarni saqlab qo'yish"""
+    c = sqlite3.connect(DB_PATH)
+    c.execute("DELETE FROM wrong_qs WHERE user_id=? AND topic_key=?", (uid, topic_key))
+    for q in wrong_list:
+        c.execute("""INSERT INTO wrong_qs(user_id,topic_key,question,opts,ans,exp,created_at)
+            VALUES(?,?,?,?,?,?,?)""",
+            (uid, topic_key, q['q'], json.dumps(q['opts'],ensure_ascii=False),
+             q['ans'], q.get('exp',''), datetime.now().isoformat()))
+    c.commit(); c.close()
+
+def db_get_wrong(uid, topic_key):
+    c = sqlite3.connect(DB_PATH)
+    rows = c.execute("""SELECT question,opts,ans,exp FROM wrong_qs
+        WHERE user_id=? AND topic_key=? ORDER BY created_at DESC""",
+        (uid, topic_key)).fetchall()
+    c.close()
+    return [{"q":r[0],"opts":json.loads(r[1]),"ans":r[2],"exp":r[3]} for r in rows]
+
+def db_clear_wrong(uid, topic_key):
+    c = sqlite3.connect(DB_PATH)
+    c.execute("DELETE FROM wrong_qs WHERE user_id=? AND topic_key=?", (uid, topic_key))
+    c.commit(); c.close()
+
+# ── REMINDER HELPERS ───────────────────────────────────────
+def db_set_reminder(uid, hour, minute):
+    c = sqlite3.connect(DB_PATH)
+    c.execute("""INSERT INTO reminders(user_id,hour,minute,active)
+        VALUES(?,?,?,1) ON CONFLICT(user_id) DO UPDATE SET hour=?,minute=?,active=1""",
+        (uid, hour, minute, hour, minute))
+    c.commit(); c.close()
+
+def db_off_reminder(uid):
+    c = sqlite3.connect(DB_PATH)
+    c.execute("UPDATE reminders SET active=0 WHERE user_id=?", (uid,))
+    c.commit(); c.close()
+
+def db_get_reminders():
+    c = sqlite3.connect(DB_PATH)
+    rows = c.execute("SELECT user_id,hour,minute FROM reminders WHERE active=1").fetchall()
+    c.close(); return rows
+
+# ── MYSTATS HELPER ─────────────────────────────────────────
+def db_mystats(uid):
+    """Har mavzu bo'yicha eng yaxshi natija"""
+    c = sqlite3.connect(DB_PATH)
+    rows = c.execute("""SELECT topic_key, MAX(pct), COUNT(*) FROM results
+        WHERE user_id=? GROUP BY topic_key ORDER BY MAX(pct) ASC""", (uid,)).fetchall()
+    c.close(); return rows  # [(topic_key, best_pct, count)]
+
+# ── GROUP QUIZ HELPERS ─────────────────────────────────────
+import uuid as _uuid
+def db_create_group_session(chat_id, topic_key, created_by):
+    sid = _uuid.uuid4().hex[:8].upper()
+    c = sqlite3.connect(DB_PATH)
+    c.execute("""INSERT INTO group_quiz(session_id,chat_id,topic_key,created_by,status,created_at)
+        VALUES(?,?,?,?,'active',?)""", (sid, chat_id, topic_key, created_by, datetime.now().isoformat()))
+    c.commit(); c.close(); return sid
+
+def db_finish_group(sid, uid, name, score, total):
+    c = sqlite3.connect(DB_PATH)
+    c.execute("""INSERT OR REPLACE INTO group_answers(session_id,user_id,full_name,score,total,finished_at)
+        VALUES(?,?,?,?,?,?)""", (sid, uid, name, score, total, datetime.now().isoformat()))
+    c.commit(); c.close()
+
+def db_group_results(sid):
+    c = sqlite3.connect(DB_PATH)
+    rows = c.execute("""SELECT full_name,score,total,
+        ROUND(score*100.0/total) as pct FROM group_answers
+        WHERE session_id=? ORDER BY pct DESC""", (sid,)).fetchall()
+    c.close(); return rows
 
 def db_leaderboard(key="all"):
     c = sqlite3.connect(DB_PATH)
@@ -1178,15 +1321,35 @@ async def send_q(context, uid, cid):
         if cert:
             await context.bot.send_photo(cid, photo=cert,
                 caption=f"🎓 {row[0] if row else 'User'} — {s}/{tot} ({pct}%)")
+
+        # Xato savollarni DB ga saqlash
+        wrong_list = st.get("wrong_list", [])
+        if wrong_list:
+            db_save_wrong(uid, st["key"], wrong_list)
+
         # Umumiy statistika
         tests, avg, best, rank, total_users = db_total_stats(uid)
         if tests > 0:
-            lang = user_lang.get(uid, "uz")
             stats_text = TX[lang]["total_stats"].format(
                 tests=tests, avg=avg, best=best,
                 rank=rank, total=total_users
             )
             await context.bot.send_message(cid, stats_text, parse_mode="HTML")
+
+        # Xato savollarni qayta ishlash tugmasi
+        if wrong_list:
+            retry_kb = InlineKeyboardMarkup([[
+                InlineKeyboardButton(
+                    TX[lang]["btn_retry"] + f" ({len(wrong_list)})",
+                    callback_data=f"retry_{st['key']}"
+                )
+            ]])
+            await context.bot.send_message(cid,
+                f"❌ {len(wrong_list)} ta savolda xato qildingiz." if lang=="uz"
+                else f"❌ Ошибок: {len(wrong_list)}",
+                reply_markup=retry_kb)
+        else:
+            await context.bot.send_message(cid, TX[lang]["no_wrong"])
 
         saved_key = st["key"]
         del user_state[uid]
@@ -1369,10 +1532,16 @@ async def poll_answer(u: Update, ctx: ContextTypes.DEFAULT_TYPE):
     for job in ctx.job_queue.get_jobs_by_name(f"t_{uid}"):
         job.schedule_removal()
     # Javobni tekshirish
-    if a.option_ids[0] == st["poll_map"][pid]:
+    correct_ans = st["poll_map"][pid]
+    if a.option_ids[0] == correct_ans:
         st["score"] += 1
+    else:
+        # Xato javob — savolni yig'ib qo'yish
+        idx_now = st["index"]
+        if idx_now < len(st["qs"]):
+            st.setdefault("wrong_list", []).append(st["qs"][idx_now])
     st["index"]      += 1
-    st["consec_skip"]  = 0   # Javob berdi — ketma-ket skip counter reset
+    st["consec_skip"]  = 0
     del st["poll_map"][pid]
     await send_q(ctx, uid, st["cid"])
 
@@ -1768,6 +1937,75 @@ async def cb_quiz_ctrl(u: Update, ctx: ContextTypes.DEFAULT_TYPE):
         await ctx.bot.send_message(cid, txt(uid, "stop_confirm"),
                                    reply_markup=main_kb(uid))
 
+# ── RETRY XATO SAVOLLAR ───────────────────────────────────
+async def cb_retry(u: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    q   = u.callback_query; await q.answer()
+    uid = q.from_user.id
+    cid = q.message.chat_id
+    topic_key = q.data[6:]   # "retry_mikro_1" -> "mikro_1"
+    wrong_qs  = db_get_wrong(uid, topic_key)
+    if not wrong_qs:
+        await q.edit_message_text(txt(uid, "no_wrong"))
+        return
+    import random, time as _t
+    random.shuffle(wrong_qs)
+    retry_key = f"retry_{topic_key}"
+    user_state[uid] = {
+        "qs"         : wrong_qs,
+        "index"      : 0,
+        "score"      : 0,
+        "skipped"    : 0,
+        "consec_skip": 0,
+        "wrong_list" : [],
+        "poll_map"   : {},
+        "key"        : retry_key,
+        "cid"        : cid,
+        "paused"     : False,
+        "start_time" : _t.time(),
+    }
+    lang = user_lang.get(uid, "uz")
+    await q.edit_message_text(TX[lang]["retry_start"].format(n=len(wrong_qs)))
+    await send_q(ctx, uid, cid)
+
+# ── MYSTATS ───────────────────────────────────────────────
+async def cmd_mystats(u: Update, ctx: ContextTypes.DEFAULT_TYPE):
+    uid  = u.effective_user.id
+    lang = user_lang.get(uid, "uz")
+    c    = sqlite3.connect(DB_PATH)
+    # Har mavzu bo'yicha eng yaxshi natija
+    rows = c.execute("""
+        SELECT topic_key, MAX(pct), COUNT(*) FROM results
+        WHERE user_id=? GROUP BY topic_key ORDER BY MAX(pct) ASC
+    """, (uid,)).fetchall()
+    c.close()
+    if not rows:
+        await u.message.reply_text(TX[lang]["mystats_empty"])
+        return
+    lines = [TX[lang]["mystats_title"]]
+    min_pct = 101; min_topic = ""
+    for tkey, best_pct, cnt in rows:
+        filled = round(best_pct / 10)
+        bar    = "█" * filled + "░" * (10 - filled)
+        topic  = tname(tkey, uid)
+        lines.append(TX[lang]["mystats_topic"].format(
+            bar=bar, pct=best_pct, topic=topic, cnt=cnt))
+        if best_pct < min_pct:
+            min_pct   = best_pct
+            min_topic = topic
+    if min_topic:
+        lines.append(TX[lang]["mystats_best"].format(topic=min_topic))
+    # Xato savollar soni
+    c2 = sqlite3.connect(DB_PATH)
+    wrong_cnt = c2.execute(
+        "SELECT COUNT(*) FROM wrong_qs WHERE user_id=?", (uid,)).fetchone()[0]
+    c2.close()
+    if wrong_cnt:
+        lines.append(f"\n❌ Xato savollar: <b>{wrong_cnt}</b> ta (qayta ishlash uchun tegishli testdan 🔁 tugmasini bosing)" 
+                     if lang=="uz" else 
+                     f"\n❌ Вопросов с ошибками: <b>{wrong_cnt}</b> (нажмите 🔁 в нужном тесте)")
+    await u.message.reply_text("\n".join(lines), parse_mode="HTML",
+                               reply_markup=main_kb(uid))
+
 # ── MAIN ──────────────────────────────────────────────────
 async def post_init(app):
     """Bot ishga tushganda command menyusini o'rnatish"""
@@ -1778,6 +2016,7 @@ async def post_init(app):
         BotCommand("top",       "🏆 Reyting"),
         BotCommand("stats",     "📊 Statistika"),
         BotCommand("stop",      "🚫 Testni to'xtatish"),
+        BotCommand("mystats",   "📊 Mening progressim"),
         BotCommand("help",      "ℹ️ Yordam"),
     ]
     await app.bot.set_my_commands(uz_commands, scope=BotCommandScopeDefault())
@@ -1822,6 +2061,8 @@ def main():
     app.add_handler(CommandHandler("addq",      cmd_addq))
     app.add_handler(CommandHandler("help",      cmd_help))
     app.add_handler(CommandHandler("feedback",  cmd_feedback))
+    app.add_handler(CommandHandler("mystats",   cmd_mystats))
+    app.add_handler(CallbackQueryHandler(cb_retry, pattern="^retry_"))
     app.add_handler(CallbackQueryHandler(cb_lang,      pattern="^lang_"))
     app.add_handler(CallbackQueryHandler(cb_cat,       pattern="^cat_"))
     app.add_handler(CallbackQueryHandler(cb_topic,     pattern="^t_"))
