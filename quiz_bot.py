@@ -1099,18 +1099,25 @@ async def timer_job(context):
     # Auto-pause: ketma-ket AUTO_PAUSE ta savol o'tkazilsa
     if st["consec_skip"] >= AUTO_PAUSE:
         st["paused"] = True
-        lang = user_lang.get(uid, "uz")
-        kb = InlineKeyboardMarkup([[
-            InlineKeyboardButton(TX[lang]["btn_continue"], callback_data="quiz_continue"),
-            InlineKeyboardButton(TX[lang]["btn_quit"],     callback_data="quiz_stop"),
-        ]])
+        lang     = user_lang.get(uid, "uz")
+        topic    = tname(st["key"], uid)
+        if lang == "uz":
+            msg = f'⏸ "{topic}" testi pauzalandi, chunki siz javob berishni to\'xtatdingiz.'
+            btn1 = "Testni davom ettirish"
+            btn2 = "Testni to'xtatish"
+        else:
+            msg = f'⏸ Тест "{topic}" на паузе, так как вы перестали отвечать.'
+            btn1 = "Продолжить тест"
+            btn2 = "Остановить тест"
+        kb = InlineKeyboardMarkup([
+            [InlineKeyboardButton(btn1, callback_data="quiz_continue")],
+            [InlineKeyboardButton(btn2, callback_data="quiz_stop")],
+        ])
         await context.bot.send_message(
-            st["cid"],
-            TX[lang]["auto_pause"].format(n=AUTO_PAUSE),
-            parse_mode   = "HTML",
-            reply_markup = kb
+            st["cid"], msg, reply_markup=kb
         )
         return
+    # Normal o'tkazish — keyingi savolga
     await context.bot.send_message(st["cid"], txt(uid, "time_up"))
     await send_q(context, uid, st["cid"])
 
@@ -1118,6 +1125,7 @@ async def timer_job(context):
 async def send_q(context, uid, cid):
     st = user_state.get(uid)
     if not st: return
+    if st.get("paused"): return   # Auto-pause yoki manual pause — hech narsa yuborma
     idx = st["index"]; qs = st["qs"]
     if idx >= len(qs):
         import time as _t
@@ -1343,9 +1351,9 @@ async def cb_topic(u: Update, ctx: ContextTypes.DEFAULT_TYPE):
     uid = q.from_user.id; key = q.data[2:]
     qs  = get_qs(key)
     import time as _t
-    user_state[uid] = {"qs":qs,"index":0,"score":0,"skipped":0,
+    user_state[uid] = {"qs":qs,"index":0,"score":0,"skipped":0,"consec_skip":0,
                        "poll_map":{},"key":key,"cid":q.message.chat_id,
-                       "start_time": _t.time()}
+                       "start_time": _t.time(), "paused": False}
     await q.edit_message_text(
         txt(uid,"quiz_start",topic=tname(key,uid),n=len(qs),timer=TIMER_SEC))
     await send_q(ctx, uid, q.message.chat_id)
