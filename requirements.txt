@@ -1,4 +1,4 @@
 python-telegram-bot[job-queue]==21.6
 Pillow==10.4.0
-groq==0.11.0
 pypdf==4.2.0
+requests==2.31.0
