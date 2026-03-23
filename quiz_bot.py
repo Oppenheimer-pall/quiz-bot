@@ -327,10 +327,10 @@ TOPICS = {
             {"q":"Ikki qismli tarif optimal tanlovi:","opts":["P va T birgalikda optimallashtiriladi", "Faqat P", "MC", "Faqat T"],"ans":0,"exp":"Optimal 2 qismli tarifda P va T bir vaqtda optimallashtiriladi."},
         ]
     },
-    "mikro_yakuniy": {
+    "mikro_yakuniy_p1": {
         "cat": "mikro",
-        "uz" : "Yakuniy test (261 savol)",
-        "ru" : "Итоговый тест (261 вопрос)",
+        "uz" : "1-30 savollar",
+        "ru" : "Вопросы 1-30",
         "questions": [
             {"q":"1-darajali narx diskriminatsiyasida ishlab chiqarish hajmi qaysi nuqtada aniqlanadi?","opts":["TR maksimum nuqtasida", "MR = 0 nuqtasida", "AC = MC nuqtasida", "P = MC nuqtasida"],"ans":3,"exp":"To'g'ri javob: B) P = MC nuqtasida"},
             {"q":"Mukammal narxlar diskriminatsiyasi sharoitida iste'molchi ortiqchaligi qanday bo'ladi?","opts":["Maksimal darajada oshadi", "Nolga teng bo'ladi", "O'zgarmaydi", "Ikki barobarga oshadi"],"ans":1,"exp":"To'g'ri javob: C) Nolga teng bo'ladi"},
@@ -362,6 +362,13 @@ TOPICS = {
             {"q":"Ep=-4, MC=50. Monopol narx?","opts":["66.67", "50", "60", "75"],"ans":0,"exp":"To'g'ri javob: C) 66.67"},
             {"q":"Monopol 'o'lik yuk' (DWL) nimani bildiradi?","opts":["Ishlab chiqarish xarajatlari", "Iste'molchi ortiqchaligi", "Monopol sababli yo'qolgan jamiyat farovonligi", "Monopol foyda"],"ans":2,"exp":"To'g'ri javob: C) Monopol sababli yo'qolgan jamiyat farovonligi"},
             {"q":"Monopol narx va raqobatlashgan bozordagi narxlarning farqi nimani ko'rsatadi?","opts":["Monopol hokimiyat darajasi va monopol rentani", "Ishlab chiqarish hajmini", "Iste'molchi ortiqchaligini", "DWL ni"],"ans":0,"exp":"To'g'ri javob: B) Monopol hokimiyat darajasi va monopol rentani"},
+        ]
+    },
+    "mikro_yakuniy_p2": {
+        "cat": "mikro",
+        "uz" : "31-60 savollar",
+        "ru" : "Вопросы 31-60",
+        "questions": [
             {"q":"Monopolist narxni MC dan yuqori belgilasa, jamiyat yo'qotishi nimada ifodalanadi?","opts":["Ishlab chiqarish xarajatida", "Iste'molchi ortiqchaligida", "Monopol foydada", "O'lik yo'qotish (DWL) uchburchak maydonida"],"ans":3,"exp":"To'g'ri javob: C) O'lik yo'qotish (DWL) uchburchak maydonida"},
             {"q":"Tabiiy monopoliyada adolatli narx qanday aniqlanadi?","opts":["P = MR", "P = AVC", "P = AC", "P = MC"],"ans":2,"exp":"To'g'ri javob: C) P = AC"},
             {"q":"Lerner indeksi formulasi qaysi?","opts":["L = (P-MC)/P", "L = (TR-TC)/P", "L = MC/P", "L = MR/P"],"ans":0,"exp":"To'g'ri javob: B) L = (P-MC)/P"},
@@ -392,6 +399,13 @@ TOPICS = {
             {"q":"Qd = MR bo'lishi qachon yuz beradi?","opts":["Monopsoniyada", "3-darajali diskriminatsiyada", "Oligopoliyada", "1-darajali (mukammal) narx diskriminatsiyasida"],"ans":3,"exp":"To'g'ri javob: C) 1-darajali (mukammal) narx diskriminatsiyasida"},
             {"q":"|E1| < |E2| bo'lsa, qaysi holat optimal?","opts":["P1 = P2", "Q1 = Q2", "P1 > P2", "P1 < P2"],"ans":2,"exp":"To'g'ri javob: C) P1 > P2"},
             {"q":"MR1=MR2 sharti bajarilmagan holatda firma nima qiladi?","opts":["Teng taqsimlaydi", "Ishlab chiqarishni to'xtatadi", "Yuqori MR bo'lgan bozorga ko'proq tovar yo'naltiradi", "Narxni oshiradi"],"ans":2,"exp":"To'g'ri javob: B) Yuqori MR bo'lgan bozorga ko'proq tovar yo'naltiradi"},
+        ]
+    },
+    "mikro_yakuniy_p3": {
+        "cat": "mikro",
+        "uz" : "61-90 savollar",
+        "ru" : "Вопросы 61-90",
+        "questions": [
             {"q":"Narx diskriminatsiyasining ikkinchi darajasi qanday?","opts":["Har bir xaridorga alohida narx", "Geografik segmentatsiya", "Vaqtga qarab narx", "Sotib olingan miqdorga qarab turli narxlar"],"ans":3,"exp":"To'g'ri javob: C) Sotib olingan miqdorga qarab turli narxlar"},
             {"q":"Monopol hokimiyatning iqtisodiy mohiyati nima?","opts":["Xarajatlarni oshirish", "Narxni MC dan yuqori belgilash imkoniyati (L > 0)", "Faqat foyda olish", "Narxni past belgilash"],"ans":1,"exp":"To'g'ri javob: B) Narxni MC dan yuqori belgilash imkoniyati (L > 0)"},
             {"q":"Barbara monopol bozori: MR=40-0.5Q, MC=4. Optimal Q?","opts":["36", "54", "80", "72"],"ans":3,"exp":"To'g'ri javob: C) 72"},
@@ -422,6 +436,13 @@ TOPICS = {
             {"q":"Ishlab chiqarish imkoniyatlari egri chizig'i (PPF) nima?","opts":["Mavjud resurslar bilan ikkita tovar maksimal kombinatsiyalari", "Bir xil xarajat chizig'i", "Izokvanta", "Befarqlik chizig'i"],"ans":0,"exp":"To'g'ri javob: C) Mavjud resurslar bilan ikkita tovar maksimal kombinatsiyalari"},
             {"q":"Mashinalar ishlab chiqarish hajmining ortishi muzlatkichlar hajmiga qanday ta'sir qiladi?","opts":["Oshiradi", "O'zgartirmaydi", "Ikki barobara oshiradi", "Kamaytiradi (PPF qonuni)"],"ans":3,"exp":"To'g'ri javob: C) Kamaytiradi (PPF qonuni)"},
             {"q":"'Limonlar bozori' atamasi iqtisodiyotga qaysi olim tomonidan kiritilgan?","opts":["J.M.Keynes", "George Akerlof", "M.Friedman", "A.Marshall"],"ans":1,"exp":"To'g'ri javob: C) George Akerlof"},
+        ]
+    },
+    "mikro_yakuniy_p4": {
+        "cat": "mikro",
+        "uz" : "91-120 savollar",
+        "ru" : "Вопросы 91-120",
+        "questions": [
             {"q":"Akerlofning 'Limonlar bozori' modeli nechanchi yil maqolasida keltirilgan?","opts":["1975", "1965", "1970", "1960"],"ans":2,"exp":"To'g'ri javob: C) 1970"},
             {"q":"Akerlof 'Limonlar bozori'da sifati yuqori avtomashinalarga berilgan nom?","opts":["Limon", "Olma", "Oltin", "Shaftoli (Peaches)"],"ans":3,"exp":"To'g'ri javob: B) Shaftoli (Peaches)"},
             {"q":"Akerlof 'Limonlar bozori'da sifati past avtomashinalarga berilgan nom?","opts":["Gilos", "Shaftoli", "Banan", "Limon"],"ans":3,"exp":"To'g'ri javob: C) Limon"},
@@ -452,6 +473,13 @@ TOPICS = {
             {"q":"Shtakelberg modelida qaysi firma ko'proq yutib chiqadi?","opts":["Lider firma", "Tashqi firma", "Ikkisi teng", "Ergashuvchi firma"],"ans":0,"exp":"To'g'ri javob: B) Lider firma"},
             {"q":"Shtakelberg: lider foydasi 1000$. Ergashuvchi foydasi?","opts":["750$", "1000$", "250$", "500$"],"ans":3,"exp":"To'g'ri javob: B) 500$"},
             {"q":"Shtakelberg: lider foydasi 4000$. Ergashuvchi foydasi?","opts":["1500$", "4000$", "2000$", "1000$"],"ans":2,"exp":"To'g'ri javob: C) 2000$"},
+        ]
+    },
+    "mikro_yakuniy_p5": {
+        "cat": "mikro",
+        "uz" : "121-150 savollar",
+        "ru" : "Вопросы 121-150",
+        "questions": [
             {"q":"Shtakelberg: lider foydasi 8000$. Ergashuvchi foydasi?","opts":["2000$", "3000$", "4000$", "8000$"],"ans":2,"exp":"To'g'ri javob: C) 4000$"},
             {"q":"Shtakelberg: lider foydasi 9000$. Ergashuvchi foydasi?","opts":["3000$", "9000$", "2250$", "4500$"],"ans":3,"exp":"To'g'ri javob: C) 4500$"},
             {"q":"Shtakelberg: lider foydasi 100$. Ergashuvchi foydasi?","opts":["75$", "25$", "100$", "50$"],"ans":3,"exp":"To'g'ri javob: B) 50$"},
@@ -482,6 +510,13 @@ TOPICS = {
             {"q":"MPL pasayib borsa va MR o'zgarmas bo'lganda MRPL qanday funksiya?","opts":["Nolga teng", "O'zgarmas", "O'suvchi", "Pasayuvchi"],"ans":3,"exp":"To'g'ri javob: C) Pasayuvchi"},
             {"q":"Sutkada 24 soat, dam olish 8 soat. Ish vaqti?","opts":["8 soat", "16 soat", "24 soat", "12 soat"],"ans":1,"exp":"To'g'ri javob: C) 16 soat"},
             {"q":"Raqobatlashgan bozorda MR va P o'rtasidagi munosabat?","opts":["MR > P", "MR < P", "MR = P", "MR = 0"],"ans":2,"exp":"To'g'ri javob: C) MR = P"},
+        ]
+    },
+    "mikro_yakuniy_p6": {
+        "cat": "mikro",
+        "uz" : "151-180 savollar",
+        "ru" : "Вопросы 151-180",
+        "questions": [
             {"q":"Minimal ish haqi kim tomonidan o'rnatiladi?","opts":["Firmalar ittifoqi", "Kasaba uyushmasi", "Davlat (hukumat)", "Xalqaro tashkilotlar"],"ans":2,"exp":"To'g'ri javob: C) Davlat (hukumat)"},
             {"q":"Minimal ish haqining oshishi ko'proq kimlarga salbiy ta'sir ko'rsatadi?","opts":["Yuqori malakali ishchilarga", "Yirik korxonalarga", "Davlat xizmatchilarga", "Kam malakali va yosh ishchilarga, kichik biznesga"],"ans":3,"exp":"To'g'ri javob: C) Kam malakali va yosh ishchilarga, kichik biznesga"},
             {"q":"Yuqori malakali mutaxassis oladigan ortiqcha ish haqi qanday ataladi?","opts":["Minimal ish haqi", "Mehnat mukofoti", "Iqtisodiy renta (economic rent)", "Nominal ish haqi"],"ans":2,"exp":"To'g'ri javob: B) Iqtisodiy renta (economic rent)"},
@@ -512,6 +547,13 @@ TOPICS = {
             {"q":"Barcha yer egalari yerning sifatidan qat'i nazar oladigan renta?","opts":["Monopol renta", "Absolyut renta", "Tabiiy renta", "Differensial renta"],"ans":1,"exp":"To'g'ri javob: C) Absolyut renta"},
             {"q":"Differensial renta qiymati nimaga bog'liq?","opts":["Yerga bo'lgan umumiy talabga", "Mulkdorlar soniga", "Yer sifati va joylashuviga", "Davlat siyosatiga"],"ans":2,"exp":"To'g'ri javob: B) Yer sifati va joylashuviga"},
             {"q":"Yer taklifi absolyut noelastik bo'lsa, narx ortishi ...","opts":["Faqat yer rentasini oshiradi, miqdor o'zgarmaydi", "Rentani kamaytiradi", "Miqdorni oshiradi", "Taklifni kamaytiradi"],"ans":0,"exp":"To'g'ri javob: B) Faqat yer rentasini oshiradi, miqdor o'zgarmaydi"},
+        ]
+    },
+    "mikro_yakuniy_p7": {
+        "cat": "mikro",
+        "uz" : "181-210 savollar",
+        "ru" : "Вопросы 181-210",
+        "questions": [
             {"q":"Renta=5000 so'm, i=10%. Yer narxi?","opts":["5000", "25000", "500000", "50000"],"ans":3,"exp":"To'g'ri javob: C) 50000"},
             {"q":"Yerga talab Q=200-4R, taklif=100. Muvozanat renta?","opts":["20", "25", "10", "50"],"ans":1,"exp":"To'g'ri javob: C) 25"},
             {"q":"Yerga talab oshsa va yer taklifi o'zgarmasa, yer rentasi?","opts":["O'zgarmaydi", "Kamayadi", "Nolga tushadi", "Ortadi"],"ans":3,"exp":"To'g'ri javob: C) Ortadi"},
@@ -542,6 +584,13 @@ TOPICS = {
             {"q":"Tashqi samaralarni yumshatish bo'yicha davlat siyosati namunalari?","opts":["Faqat soliqlar", "Pigou soliqlari, standartlar, mulk huquqlari (Coase), cap-and-trade", "Faqat subsidiyalar", "Faqat normativlar"],"ans":1,"exp":"To'g'ri javob: B) Pigou soliqlari, standartlar, mulk huquqlari (Coase), cap-and-trade"},
             {"q":"Tovar iste'mol qilish natijasida uchinchi shaxslarga ta'sir qilishni ifodalaydigan tushuncha?","opts":["Iqtisodiy renta", "Tashqi ta'sir (eksternaliya)", "Iste'molchi ortiqchaligi", "Monopol kuch"],"ans":1,"exp":"To'g'ri javob: B) Tashqi ta'sir (eksternaliya)"},
             {"q":"Bitta sotuvchi va ko'p xaridorlar qatnashadigan bozor?","opts":["Monopsoniya", "Monopoliya", "Ikki tomonlama monopoliya", "Oligopoliya"],"ans":1,"exp":"To'g'ri javob: C) Monopoliya"},
+        ]
+    },
+    "mikro_yakuniy_p8": {
+        "cat": "mikro",
+        "uz" : "211-240 savollar",
+        "ru" : "Вопросы 211-240",
+        "questions": [
             {"q":"Bitta xaridor va ko'p sotuvchilar qatnashadigan bozor?","opts":["Monopsoniya", "Oligopoliya", "Monopoliya", "Oligopsoniya"],"ans":0,"exp":"To'g'ri javob: B) Monopsoniya"},
             {"q":"Monopolist sotuvchi + monopolist xaridor = ?","opts":["Monopolistik raqobat", "Oligopoliya", "Ikki tomonlama monopoliya", "Duopoliya"],"ans":2,"exp":"To'g'ri javob: C) Ikki tomonlama monopoliya"},
             {"q":"Oligopoliya so'zining ma'nosi?","opts":["Bir nechta sotuvchi", "Ko'p sotuvchi", "Ko'p xaridor", "Yagona xaridor"],"ans":0,"exp":"To'g'ri javob: B) Bir nechta sotuvchi"},
@@ -572,6 +621,13 @@ TOPICS = {
             {"q":"Narx diskriminatsiyasi nima?","opts":["Narxlarni tushirish siyosati", "Bir xil mahsulot yoki xizmat turli xaridorlarga turli narxlarda sotilishi", "Monopol narxlash", "Bepul narxlash"],"ans":1,"exp":"To'g'ri javob: B) Bir xil mahsulot yoki xizmat turli xaridorlarga turli narxlarda sotilishi"},
             {"q":"1-darajali narx diskriminatsiyasiga misol?","opts":["Avtomobil dilerligida har bir xaridor bilan alohida narx kelishish", "Mavsumiy chegirma", "Optom savdo", "Supermarketda chegirma"],"ans":0,"exp":"To'g'ri javob: B) Avtomobil dilerligida har bir xaridor bilan alohida narx kelishish"},
             {"q":"Elektr energiyasida iste'mol hajmiga qarab turli tarif — bu qaysi narx diskriminatsiyasi?","opts":["1-darajali", "Auksiyon narx", "3-darajali", "2-darajali"],"ans":3,"exp":"To'g'ri javob: B) 2-darajali"},
+        ]
+    },
+    "mikro_yakuniy_p9": {
+        "cat": "mikro",
+        "uz" : "241-261 savollar",
+        "ru" : "Вопросы 241-261",
+        "questions": [
             {"q":"Aholiga elektroenergiya iste'moli uchun narx belgilanishi qaysi daraja?","opts":["Mukammal diskriminatsiya", "1-darajali", "3-darajali", "2-darajali — iste'mol hajmiga qarab turli tariflar"],"ans":3,"exp":"To'g'ri javob: B) 2-darajali — iste'mol hajmiga qarab turli tariflar"},
             {"q":"Raqobatlashgan bozorning samaradorlik sharti?","opts":["P = MC (= min AC uzoq muddatda)", "MR = 0", "P = MR", "TR = TC"],"ans":0,"exp":"To'g'ri javob: B) P = MC (= min AC uzoq muddatda)"},
             {"q":"AC < P bo'lsa, firma qisqa muddatda?","opts":["Zararsiz ishlaydi", "Iqtisodiy foyda oladi", "Zarar ko'radi", "Tarmoqdan chiqadi"],"ans":1,"exp":"To'g'ri javob: B) Iqtisodiy foyda oladi"},
@@ -595,10 +651,10 @@ TOPICS = {
             {"q":"Ikki tomonlama monopoliyada ish haqi?","opts":["Monopol darajada", "Nolga teng", "Raqobatlashgan darajada", "Noaniq — tomonlar kelishuviga bog'liq"],"ans":3,"exp":"To'g'ri javob: C) Noaniq — tomonlar kelishuviga bog'liq"},
         ]
     },
-    "pul_oraliq": {
+    "pul_oraliq_p1": {
         "cat": "pul",
-        "uz" : "Oraliq test (314 savol)",
-        "ru" : "Промежуточный тест (314 вопросов)",
+        "uz" : "1-30 savollar",
+        "ru" : "Вопросы 1-30",
         "questions": [
             {"q":"\"Pul va banklar\" fani qaysi turdagi fan hisoblanadi?","opts":["Texnik fan", "Nazariy fan", "Amaliy fan", "Huquqiy fan"],"ans":1,"exp":"To'g'ri javob: A) Nazariy fan"},
             {"q":"\"Pul va banklar\" fanining predmeti nima?","opts":["Faqat pul muomalasi", "Faqat kredit munosabatlari", "Pul, kredit va bank tizimi bilan bog'liq pul-kredit munosabatlari", "Faqat bank faoliyati"],"ans":2,"exp":"To'g'ri javob: A) Pul, kredit va bank tizimi bilan bog'liq pul-kredit munosabatlari"},
@@ -630,6 +686,13 @@ TOPICS = {
             {"q":"Hozirda nechta valyuta xalqaro rezerv valyutasi hisoblanadi?","opts":["3 ta", "5 ta", "7 ta", "10 ta"],"ans":1,"exp":"To'g'ri javob: A) 5 ta"},
             {"q":"Jahon puli funksiyasini bajaruvchi valyutalar ro'yxatiga qaysi valyuta kirmaydi?","opts":["O'zbek so'mi", "AQSh dollari", "Yevro", "Yaponiya iyenasi"],"ans":0,"exp":"To'g'ri javob: A) O'zbek so'mi"},
             {"q":"Qiymatning oddiy shakli qaysi tuzumga xos?","opts":["Sotsialist jamiyatga", "Sanoat jamiyatiga", "Natural xo'jalik tuzumiga", "Bozor iqtisodiyotiga"],"ans":2,"exp":"To'g'ri javob: A) Natural xo'jalik tuzumiga"},
+        ]
+    },
+    "pul_oraliq_p2": {
+        "cat": "pul",
+        "uz" : "31-60 savollar",
+        "ru" : "Вопросы 31-60",
+        "questions": [
             {"q":"Qog'oz pullar muomalaga kira boshlashidan oldin ular bilan parallel ravishda nima bo'lgan?","opts":["Oltin va kumush tangalar muomalada bo'lgan", "Faqat tovar ayirboshlash bo'lgan", "Hech narsa bo'lmagan", "Faqat mis tangalar muomalada bo'lgan"],"ans":0,"exp":"To'g'ri javob: A) Oltin va kumush tangalar muomalada bo'lgan"},
             {"q":"Qog'oz pullarni kirib kelishining asosiy sabablaridan biri nima?","opts":["Davlatning buyrug'i", "Qimmatbaho metallarni olib yurish va saqlashda qiyinchiliklar", "Xalqning talabi", "Oltin topilmay qolishi"],"ans":1,"exp":"To'g'ri javob: A) Qimmatbaho metallarni olib yurish va saqlashda qiyinchiliklar"},
             {"q":"Dastlab pullar qayerda saqlanган?","opts":["Ibodatxonalarda", "Shaxsiy uylarda", "Savdo omborlarida", "Qal'alarda"],"ans":0,"exp":"To'g'ri javob: A) Ibodatxonalarda"},
@@ -660,6 +723,13 @@ TOPICS = {
             {"q":"Bankning ustav kapitali eng kam miqdori qancha bo'lishi lozim?","opts":["100 mlrd. so'm", "50 mlrd. so'm", "10 mlrd. so'm", "200 mlrd. so'm"],"ans":0,"exp":"To'g'ri javob: A) 100 mlrd. so'm"},
             {"q":"\"2020–2025 yillarga mo'ljallangan bank tizimini isloh qilish strategiyasi\" nima ko'zlagan?","opts":["Davlat ulushi bo'lmagan banklar aktivlari ulushini 15 foizdan 60 foizga oshirish", "Barcha banklarni davlat mulkiga o'tkazish", "Bank tizimini tugatish", "Xorijiy banklar ulushini kamaytirish"],"ans":0,"exp":"To'g'ri javob: A) Davlat ulushi bo'lmagan banklar aktivlari ulushini 15 foizdan 60 foizga oshirish"},
             {"q":"Pul mablag'larini omonatlarga jalb etish bo'yicha faoliyat bilan shug'ullanishga faqat kimlar haqli?","opts":["Faqat banklar", "Barcha moliya institutlari", "Markaziy bank", "Moliya vazirligi"],"ans":0,"exp":"To'g'ri javob: A) Faqat banklar"},
+        ]
+    },
+    "pul_oraliq_p3": {
+        "cat": "pul",
+        "uz" : "61-90 savollar",
+        "ru" : "Вопросы 61-90",
+        "questions": [
             {"q":"Banklar qanday faoliyat bilan shug'ullanishga haqli emas?","opts":["Kredit berish", "Hisob-kitob xizmati ko'rsatish", "Depozit jalb qilish", "Bevosita ishlab chiqarish, savdo va sug'urta faoliyati"],"ans":3,"exp":"To'g'ri javob: A) Bevosita ishlab chiqarish, savdo va sug'urta faoliyati"},
             {"q":"O'zbekiston bank tizimining rivojlanishida muhim muammo sifatida nima ko'rsatilgan?","opts":["Milliy valyutaning qadrsizlanish sur'atining yuqoriligi", "Xorijiy investitsiyalar yo'qligi", "Texnologiyalar etishmasligi", "Bank sonining kamligi"],"ans":0,"exp":"To'g'ri javob: A) Milliy valyutaning qadrsizlanish sur'atining yuqoriligi"},
             {"q":"Dunyodagi birinchi Markaziy bank qaysi va qachon tashkil etilgan?","opts":["Shvesiyaning Riskbanki, 1668 yilda", "Fransiyaning Markaziy banki, 1800 yilda", "Gollandiyaning Markaziy banki, 1600 yilda", "Angliyaning Markaziy banki, 1694 yilda"],"ans":0,"exp":"To'g'ri javob: A) Shvesiyaning Riskbanki, 1668 yilda"},
@@ -690,6 +760,13 @@ TOPICS = {
             {"q":"Tijorat banklari qanday 3 asosiy funksiyani bajaradi?","opts":["Kredit berish, omonat qabul qilish, hisob yuritish", "Pul chiqarish, nazorat qilish, maslahat berish", "Investitsiya qilish, sug'urtalash, savdo qilish", "Bo'sh pul mablag'larini to'plash, transformasiya qilish, pul aylanmasini boshqarish"],"ans":3,"exp":"To'g'ri javob: A) Bo'sh pul mablag'larini to'plash, transformasiya qilish, pul aylanmasini boshqarish"},
             {"q":"Tijorat banklari emitent sifatida qanday emission qimmatli qog'ozlarni muomalaga chiqaradi?","opts":["Faqat veksellar", "Aksiyalar, obligasiyalar, opsionlar", "Faqat obligatsiyalar", "Faqat aksiyalar"],"ans":1,"exp":"To'g'ri javob: A) Aksiyalar, obligasiyalar, opsionlar"},
             {"q":"Tijorat banklari qanday noеmission qimmatli qog'ozlar chiqaradi?","opts":["Faqat obligatsiyalar", "Faqat cheklar", "Faqat veksellar", "Depozit sertifikatlari va jamg'arma sertifikatlari"],"ans":3,"exp":"To'g'ri javob: A) Depozit sertifikatlari va jamg'arma sertifikatlari"},
+        ]
+    },
+    "pul_oraliq_p4": {
+        "cat": "pul",
+        "uz" : "91-120 savollar",
+        "ru" : "Вопросы 91-120",
+        "questions": [
             {"q":"Tijorat banki tomonidan to'plangan pul mablag'lari asosan qaysi ikki yo'nalishga transformasiya qilinadi?","opts":["Kreditlar va qimmatli qog'ozlar sotib olishga", "Faqat qimmatli qog'ozlarga", "Faqat kreditlarga", "Faqat depozitlarga"],"ans":0,"exp":"To'g'ri javob: A) Kreditlar va qimmatli qog'ozlar sotib olishga"},
             {"q":"Pul aylanmasini boshqarish funksiyasi doirasida tijorat banki nima qiladi?","opts":["Faqat kredit berish", "Naqd pullarni qabul qilish va berish, naqd pulsiz hisob-kitoblar, plastik kartalar", "Faqat naqd pul berish", "Faqat aksiyalar chiqarish"],"ans":1,"exp":"To'g'ri javob: A) Naqd pullarni qabul qilish va berish, naqd pulsiz hisob-kitoblar, plastik kartalar"},
             {"q":"2018 yil 1 yanvar holatiga O'zbekistondagi tijorat banklaridan nechta xorijiy kapital ishtirokidagi bank bo'lgan?","opts":["10 ta", "7 ta", "3 ta", "5 ta"],"ans":3,"exp":"To'g'ri javob: A) 5 ta"},
@@ -720,6 +797,13 @@ TOPICS = {
             {"q":"Biметализмнинг параллел валюта тизимида нима бўлади?","opts":["Faqat kumush tangalar muomalada bo'ladi", "Davlat oltin va kumush tangalar o'rtasidagi nisbatni belgilamaydi, bu nisbat bozorda o'rnatiladi", "Faqat oltin tangalar muomalada bo'ladi", "Davlat nisbatni o'zi belgilaydi"],"ans":1,"exp":"To'g'ri javob: A) Davlat oltin va kumush tangalar o'rtasidagi nisbatni belgilamaydi, bu nisbat bozorda o'rnatiladi"},
             {"q":"Biметализмнинг иккиёқлама валюта тизимида нима бўлади?","opts":["Faqat yevro ishlatiladi", "Nisbat bozorda o'rnatiladi", "Faqat dollar ishlatiladi", "Davlat oltin va kumush tangalar o'rtasidagi nisbatni belgilaydi"],"ans":3,"exp":"To'g'ri javob: A) Davlat oltin va kumush tangalar o'rtasidagi nisbatni belgilaydi"},
             {"q":"Biметализмнинг оқсоқланувчи валюта тизимида нима бўлади?","opts":["Oltin tangalar erkin zarb etiladi, kumush tangalar esa yopiq rejimda zarb etiladi", "Ikkalasi ham erkin zarb etiladi", "Ikkalasi ham yopiq zarb etiladi", "Faqat qog'oz pullar ishlatiladi"],"ans":0,"exp":"To'g'ri javob: A) Oltin tangalar erkin zarb etiladi, kumush tangalar esa yopiq rejimda zarb etiladi"},
+        ]
+    },
+    "pul_oraliq_p5": {
+        "cat": "pul",
+        "uz" : "121-150 savollar",
+        "ru" : "Вопросы 121-150",
+        "questions": [
             {"q":"Monometalizm nima?","opts":["Bir metal (oltin yoki kumush) ning pul vazifasini bajarishi", "Ikki metaldan foydalanish", "Elektron pul tizimi", "Qog'oz pullar tizimi"],"ans":0,"exp":"To'g'ri javob: A) Bir metal (oltin yoki kumush) ning pul vazifasini bajarishi"},
             {"q":"Pul tizimining barqarorligi nimani anglatadi?","opts":["Oltin bilan ta'minlanganlik", "Pulning barcha funksiyalarini to'liq bajarilishini ta'minlash", "Inflyatsiyaning yo'qligi", "Pul kursining o'zgarmasligi"],"ans":1,"exp":"To'g'ri javob: A) Pulning barcha funksiyalarini to'liq bajarilishini ta'minlash"},
             {"q":"Pul tizimining elastikligi nimani anglatadi?","opts":["Iqtisodiyotning pul mablag'lariga bo'lgan talabini o'zgarishiga o'z vaqtida javob bera olish", "Yangi pullarni chiqarish", "Pul kursining o'zgarishi", "Valyuta almashinuvi"],"ans":0,"exp":"To'g'ri javob: A) Iqtisodiyotning pul mablag'lariga bo'lgan talabini o'zgarishiga o'z vaqtida javob bera olish"},
@@ -750,6 +834,13 @@ TOPICS = {
             {"q":"Kredit agentliklarining resurs manbalari nimalardan iborat?","opts":["Depozitlar va ustav kapitali", "Davlat grantlari va ustav kapitali", "Ustav kapitali va ipoteka qimmatli qog'ozlarini sotishdan olingan mablag'lar", "Faqat ustav kapitali"],"ans":2,"exp":"To'g'ri javob: A) Ustav kapitali va ipoteka qimmatli qog'ozlarini sotishdan olingan mablag'lar"},
             {"q":"Kredit agentliklari qanday faoliyat olib boradi?","opts":["Kichik biznesga kredit beradi", "Aholidan depozit qabul qiladi", "Ipoteka qimmatli qog'ozlarini chiqarish yo'li bilan tijorat banklarining ipoteka kreditlarini qay...", "Valyuta almashtirish operatsiyalarini amalga oshiradi"],"ans":2,"exp":"To'g'ri javob: A) Ipoteka qimmatli qog'ozlarini chiqarish yo'li bilan tijorat banklarining ipoteka kreditlarini qayta moliyalashtiradi"},
             {"q":"Hisob-kitob muassasalari qanday manbalar hisobidan faoliyat olib boradi?","opts":["Davlat byudjeti va ustav kapitali hisobidan", "Depozitlar va ustav kapitali hisobidan", "Ustav kapitali va hisob-kitoblarda ishtirok etuvchi banklardan olingan avans to'lovlari hisobidan", "Faqat ustav kapitali hisobidan"],"ans":2,"exp":"To'g'ri javob: A) Ustav kapitali va hisob-kitoblarda ishtirok etuvchi banklardan olingan avans to'lovlari hisobidan"},
+        ]
+    },
+    "pul_oraliq_p6": {
+        "cat": "pul",
+        "uz" : "151-180 savollar",
+        "ru" : "Вопросы 151-180",
+        "questions": [
             {"q":"Taraqqiy etgan davlatlarda kredit uyushmalari kredit berishda qaysi printsiplariga e'tibor qaratishmaydi?","opts":["Qaytarishlik va muddatlilik prinsiplariga", "Barcha printsiplariga", "Ta'minlanganlik va maqsadlilik prinsiplariga", "Foiz to'lashlilik va muddatlilik prinsiplariga"],"ans":2,"exp":"To'g'ri javob: A) Ta'minlanganlik va maqsadlilik prinsiplariga"},
             {"q":"Lizing shartnomasida qanday shartlardan biri bajarilishi kerak?","opts":["Lizing ob'ekti har yili qayta baholanishi kerak", "Lizing shartnamasi muddati tugagach, lizing ob'ekti lizing oluvchining mulki bo'lib o'tsa", "Lizing shartnamasi faqat 1 yilga tuzilishi mumkin", "Lizing oluvchi har oyda hisobot taqdim etishi kerak"],"ans":1,"exp":"To'g'ri javob: A) Lizing shartnamasi muddati tugagach, lizing ob'ekti lizing oluvchining mulki bo'lib o'tsa"},
             {"q":"Mikrokredit tashkilotiga lицензия olish uchun lицензия berganlik uchun qancha davlat boji undiriladi?","opts":["BHMning 4 barobari miqdorida", "BHMning 1 barobari miqdorida", "BHMning 2 barobari miqdorida", "BHMning 10 barobari miqdorida"],"ans":2,"exp":"To'g'ri javob: A) BHMning 2 barobari miqdorida"},
@@ -780,6 +871,13 @@ TOPICS = {
             {"q":"Hozirgi davrda dunyoda nechta valyuta xalqaro miqyosda to'lov vositasi vazifasini bajara oladi?","opts":["10 ta", "3 ta", "7 ta", "5 ta"],"ans":2,"exp":"To'g'ri javob: A) 7 ta"},
             {"q":"Xalqaro miqyosda to'lov vositasi vazifasini bajara oladigan 7 ta valyuta qatoriga qaysi biri kirmaydi?","opts":["Yaponiya ieni", "Kanada dollari", "AQSh dollari", "Xitoy yuani"],"ans":3,"exp":"To'g'ri javob: A) Xitoy yuani"},
             {"q":"XVFdan xalqaro rezerv valyuta maqomiga ega 5 ta valyuta qatoriga qaysi biri kirmaydi?","opts":["AQSh dollari", "Yaponiya ieni", "Shveysariya franki", "Xitoy yuani"],"ans":2,"exp":"To'g'ri javob: A) Shveysariya franki"},
+        ]
+    },
+    "pul_oraliq_p7": {
+        "cat": "pul",
+        "uz" : "181-210 savollar",
+        "ru" : "Вопросы 181-210",
+        "questions": [
             {"q":"XVF valyutaga xalqaro rezerv maqomni berish uchun nechta omilni hisobga oladi?","opts":["4 ta omilni", "5 ta omilni", "2 ta omilni", "3 ta omilni"],"ans":0,"exp":"To'g'ri javob: A) 4 ta omilni"},
             {"q":"Xitoy yuani xalqaro rezerv valyuta sifatida qachon tan olindi?","opts":["2005 yil 30 iyunda", "2010 yil 1 yanvardan", "2020 yil 1 martdan", "2015 yil 30 noyabrda"],"ans":3,"exp":"To'g'ri javob: A) 2015 yil 30 noyabrda"},
             {"q":"Erkin ishlatiladigan valyuta deganda nima tushuniladi?","opts":["Faqat oltinga erkin ayirbosh qilinadigan valyuta", "Davlat tomonidan boshqariladigan valyuta", "Faqat xalqaro bozorlarда sotiluvchi valyuta", "To'lov balansining joriy operatsiyalar bo'limida valyutaviy cheklashlar bo'lmagan mamlakatning puli"],"ans":3,"exp":"To'g'ri javob: A) To'lov balansining joriy operatsiyalar bo'limida valyutaviy cheklashlar bo'lmagan mamlakatning puli"},
@@ -810,6 +908,13 @@ TOPICS = {
             {"q":"AQShda oltin zahirasi 2018 yilda qancha tonna edi va u oltin-valyuta zahirasida qancha ulushni egalladi?","opts":["8133,5 tonna, ulushi 75,0%", "3372,2 tonna, ulushi 70,3%", "2436,0 tonna, ulushi 63,4%", "2451,8 tonna, ulushi 67,8%"],"ans":0,"exp":"To'g'ri javob: A) 8133,5 tonna, ulushi 75,0%"},
             {"q":"Rossiyaning oltin zahirasi 2018 yilda qancha edi?","opts":["1054,1 tonna", "788,6 tonna", "384,4 tonna", "1909,8 tonna"],"ans":3,"exp":"To'g'ri javob: A) 1909,8 tonna"},
             {"q":"Xitoyning oltin zahirasi 2018 yilda qancha edi?","opts":["395,0 tonna", "2436,0 tonna", "1054,1 tonna", "1842,6 tonna"],"ans":3,"exp":"To'g'ri javob: A) 1842,6 tonna"},
+        ]
+    },
+    "pul_oraliq_p8": {
+        "cat": "pul",
+        "uz" : "211-240 savollar",
+        "ru" : "Вопросы 211-240",
+        "questions": [
             {"q":"Valyuta munosabatlari yuzaga kelishi uchun asoslar qatoriga nima kirmaydi?","opts":["Davlatlar o'rtasida grantlarning taqsimlanishi", "Mamlakat ichki savdo aylanmasi", "Tovar va xizmatlarni eksport qilinishi", "Xalqaro kreditlarning olinishi va berilishi"],"ans":1,"exp":"To'g'ri javob: A) Mamlakat ichki savdo aylanmasi"},
             {"q":"Tijorat bankining operatsiyasi deganda nima tushuniladi?","opts":["Faqat pul chiqarish", "Faqat depozit qabul qilish", "Faqat kredit berish jarayoni", "Ma'lum bir bank mahsulotini yaratish maqsadida amalga oshirilgan harakatlar"],"ans":3,"exp":"To'g'ri javob: A) Ma'lum bir bank mahsulotini yaratish maqsadida amalga oshirilgan harakatlar"},
             {"q":"An'anaviy bank mahsulotlariga quyidagilardan qaysi biri kirmaydi?","opts":["Faktoring va forfeyting", "Hisob-kitoblar", "Depozitlar va kreditlar", "Valyuta ayirboshlash"],"ans":0,"exp":"To'g'ri javob: A) Faktoring va forfeyting"},
@@ -840,6 +945,13 @@ TOPICS = {
             {"q":"K. Marks inflyasiya haqida nima degan?","opts":["Inflyasiyaning sababi faqat davlat byudjeti defisiti", "Tovarlar baholarining oshishi natijasida pul massasi ko'payadi va pul qadrsizlanadi", "Pul massasining ko'payishi narxlarni oshiradi", "Inflyasiya faqat urush davrida yuzaga keladi"],"ans":1,"exp":"To'g'ri javob: A) Tovarlar baholarining oshishi natijasida pul massasi ko'payadi va pul qadrsizlanadi"},
             {"q":"M. Fridmen inflyasiya haqida nima degan?","opts":["Inflyasiya faqat moliyaviy inqirozlarda bo'ladi", "Muomaladagi pullarning ko'payishi tovarlar baholarining oshishiga olib keladi", "Inflyasiyaning sababi faqat ish haqining oshishi", "Narxlarning oshishi pul massasini ko'paytiradi"],"ans":1,"exp":"To'g'ri javob: A) Muomaladagi pullarning ko'payishi tovarlar baholarining oshishiga olib keladi"},
             {"q":"Inflyasiyaning namoyon bo'lish shakllariga nima kirmaydi?","opts":["Milliy pul tovarlar va xizmatlarga nisbatan qadrsizlanishi", "Milliy pul xorijiy valyutalarga nisbatan qadrsizlanishi", "Milliy valyuta oltinga nisbatan qadrsizlanishi", "Milliy pulning oltin zahiralariga nisbatan qadrsizlanishi"],"ans":3,"exp":"To'g'ri javob: A) Milliy pulning oltin zahiralariga nisbatan qadrsizlanishi"},
+        ]
+    },
+    "pul_oraliq_p9": {
+        "cat": "pul",
+        "uz" : "241-270 savollar",
+        "ru" : "Вопросы 241-270",
+        "questions": [
             {"q":"Talab inflyasiyasi qachon yuzaga keladi?","opts":["Ish haqi oshganda", "Tovarlar ishlab chiqarish ularga bo'lgan talabni qondira olmasa, pul taklifi keskin oshsa", "Import qimmatlashganda", "Ishlab chiqarish xarajatlari oshib ketganda"],"ans":1,"exp":"To'g'ri javob: A) Tovarlar ishlab chiqarish ularga bo'lgan talabni qondira olmasa, pul taklifi keskin oshsa"},
             {"q":"Taklif (chiqim) inflyasiyasi nima bilan bog'liq?","opts":["Tovarlarni ishlab chiqarish uchun zarur xarajatlarning oshib ketishi bilan", "Talab oshishi bilan", "Import kamayishi bilan", "Pul emissiyasi bilan"],"ans":0,"exp":"To'g'ri javob: A) Tovarlarni ishlab chiqarish uchun zarur xarajatlarning oshib ketishi bilan"},
             {"q":"XVF ekspertlariga ko'ra qanday inflyasiya mo'tadil hisoblanadi?","opts":["Yillik darajasi 5 foizdan oshmasa", "Yillik darajasi 3 foizdan oshmasa", "Yillik darajasi 10 foizdan oshmasa", "Yillik darajasi 1 foizdan oshmasa"],"ans":1,"exp":"To'g'ri javob: A) Yillik darajasi 3 foizdan oshmasa"},
@@ -870,6 +982,13 @@ TOPICS = {
             {"q":"O'zbekistonda tijorat banklari o'rtasidagi barcha to'lovlar nima orqali o'tadi?","opts":["Xalqaro banklar orqali", "Markaziy bank orqali, chunki tijorat banklarining nostro vakillik hisobvaraqlari Markaziy bankda ...", "Davlat xazinachiligi orqali", "Kliring markazi orqali"],"ans":1,"exp":"To'g'ri javob: A) Markaziy bank orqali, chunki tijorat banklarining nostro vakillik hisobvaraqlari Markaziy bankda ochilgan"},
             {"q":"O'zbekistonda naqd pulsiz hisob-kitoblarda to'lov topshiriqnomalari qancha ulushni egallaydi?","opts":["50,1%", "30%", "20%", "70%"],"ans":0,"exp":"To'g'ri javob: A) 50,1%"},
             {"q":"\"Markaziy bank to'g'risida\"gi qonunning 32-moddasiga ko'ra milliy pul tizimi nimalardan iborat?","opts":["Bank tizimi va pul muomalasi", "Pul birligi, pul muomalasini tashkil etish va tartibga solish", "Faqat pul birligi", "Faqat pul muomalasi"],"ans":1,"exp":"To'g'ri javob: A) Pul birligi, pul muomalasini tashkil etish va tartibga solish"},
+        ]
+    },
+    "pul_oraliq_p10": {
+        "cat": "pul",
+        "uz" : "271-300 savollar",
+        "ru" : "Вопросы 271-300",
+        "questions": [
             {"q":"O'zbekistonda qanday to'lovlar ketma-ketligi qo'llaniladi?","opts":["To'lovlarning kalendar' ketma-ketligi", "To'lovlarning maqsadli ketma-ketligi", "To'lovlarning tartib raqami bo'yicha ketma-ketligi", "To'lovlarning hajm bo'yicha ketma-ketligi"],"ans":1,"exp":"To'g'ri javob: A) To'lovlarning maqsadli ketma-ketligi"},
             {"q":"2017-2021 yillarda O'zbekistonni rivojlantirishning Harakatlar strategiyasida pul tizimi bo'yicha qanday vazifalar belgilangan?","opts":["Faqat naqd pullarni qisqartirish", "Faqat oltin zaxiralarini oshirish", "Pul-kredit siyosatini takomillashtirish, valyutani tartibga solishda bozor mexanizmlari joriy etish", "Faqat inflyasiyani pasaytirish"],"ans":2,"exp":"To'g'ri javob: A) Pul-kredit siyosatini takomillashtirish, valyutani tartibga solishda bozor mexanizmlari joriy etish"},
             {"q":"Naqdsiz pul aylanmasi nima?","opts":["Faqat Markaziy bank operatsiyalari", "Faqat xorijiy valyuta operatsiyalari", "Faqat naqd pullarni ko'chirish", "Pul mablag'larini tijorat banklaridagi hisobvaraqlar bo'yicha ko'chirish va o'zaro talablarni voz..."],"ans":3,"exp":"To'g'ri javob: A) Pul mablag'larini tijorat banklaridagi hisobvaraqlar bo'yicha ko'chirish va o'zaro talablarni voz kechish"},
@@ -900,6 +1019,13 @@ TOPICS = {
             {"q":"Kredit so'zi lotincha qaysi so'zdan olingan?","opts":["\"Creditum\" – ssuda, qarz; ayrimlari \"credo\" – ishonaman deydi", "\"Credere\" – bermoq", "\"Creditor\" – ssuda beruvchi", "\"Credibilis\" – ishonchli"],"ans":0,"exp":"To'g'ri javob: A) \"Creditum\" – ssuda, qarz; ayrimlari \"credo\" – ishonaman deydi"},
             {"q":"Kreditning boshqa iqtisodiy kategoriyalar bilan aloqadorligining uchinchi sababi nima?","opts":["Ular bir xil muddatga beriladi", "Ular bozor munosabatlari doirasida amal qiladi va bozor qonunlariga bo'ysunadi", "Ularning hammasi davlat tomonidan tartibga solinadi", "Ular bir xil sub'ektlarga tegishli"],"ans":1,"exp":"To'g'ri javob: A) Ular bozor munosabatlari doirasida amal qiladi va bozor qonunlariga bo'ysunadi"},
             {"q":"Kreditning ahamiyatini belgilovchi omillarga nima kirmaydi?","opts":["Kredit inflyasiyani to'liq yo'q qiladi", "Kredit xo'jalik yurituvchi sub'ektlar faoliyatini rivojlantirish imkonini beradi", "Kredit aholining turmush farovonligini oshirish imkonini beradi", "Kredit iqtisodiyotdagi to'lovlar uzluksizligini ta'minlaydi"],"ans":0,"exp":"To'g'ri javob: A) Kredit inflyasiyani to'liq yo'q qiladi"},
+        ]
+    },
+    "pul_oraliq_p11": {
+        "cat": "pul",
+        "uz" : "301-314 savollar",
+        "ru" : "Вопросы 301-314",
+        "questions": [
             {"q":"Kredit va pul o'rtasidagi asosiy farq nima?","opts":["Kreditda qiymat qarama-qarshi harakatda bo'lmaydi, qarz oluvchi ma'lum muddatdan so'ng qaytaradi", "Pul ham kredit hisoblanadi", "Kredit faqat banklararo beriladi", "Kredit faqat pul shaklida beriladi"],"ans":0,"exp":"To'g'ri javob: A) Kreditda qiymat qarama-qarshi harakatda bo'lmaydi, qarz oluvchi ma'lum muddatdan so'ng qaytaradi"},
             {"q":"Kredit va moliya o'rtasidagi asosiy farq nima?","opts":["Kredit mablag'larining egasi o'zgarmaydi (kreditor mулкдор saqlanadi), moliyada mablag' egasi o'z...", "Kredit faqat pulda, moliya faqat tovarda bo'ladi", "Kredit davlat tomonidan, moliya xususiy sektorda beriladi", "Kredit qaytarilmaydi, moliya qaytariladi"],"ans":0,"exp":"To'g'ri javob: A) Kredit mablag'larining egasi o'zgarmaydi (kreditor mулкдор saqlanadi), moliyada mablag' egasi o'zgaradi"},
             {"q":"Ссуда фонди нима?","opts":["Markaziy bankning aktivlari", "Jamiyatdagi qarzga beriluvchi qiymatning maqsadga yo'naltirilgan harakati bilan bog'liq ishlab ch...", "Faqat banklarning zaxiralari", "Davlatning qarz mablag'lari"],"ans":1,"exp":"To'g'ri javob: A) Jamiyatdagi qarzga beriluvchi qiymatning maqsadga yo'naltirilgan harakati bilan bog'liq ishlab chiqarish munosabatlari majmuasi"},
