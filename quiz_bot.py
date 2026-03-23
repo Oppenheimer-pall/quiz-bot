@@ -1790,17 +1790,28 @@ ans = индекс правильного варианта (0=A, 1=B, 2=C, 3=D)
 
     prompt = prompt_uz if lang == "uz" else prompt_ru
 
+    # Modellar ro'yxati — biri limitga yetsa keyingisini sinaydi
+    GEMINI_MODELS = [
+        "gemini-2.0-flash-lite",
+        "gemini-1.5-flash",
+        "gemini-2.0-flash",
+        "gemini-1.5-flash-8b",
+    ]
+
     def _gemini_call(p):
-        try:
-            genai.configure(api_key=GEMINI_KEY)
-            model    = genai.GenerativeModel("gemini-2.0-flash")
-            response = model.generate_content(p)
-            raw      = response.text.strip()
-            log.info(f"gemini raw (first 200): {raw[:200]}")
-            return raw
-        except Exception as e:
-            log.error(f"gemini _sync xato: {e}")
-            raise
+        genai.configure(api_key=GEMINI_KEY)
+        last_err = None
+        for model_name in GEMINI_MODELS:
+            try:
+                model    = genai.GenerativeModel(model_name)
+                response = model.generate_content(p)
+                raw      = response.text.strip()
+                log.info(f"gemini [{model_name}] OK, first 100: {raw[:100]}")
+                return raw
+            except Exception as e:
+                log.warning(f"gemini [{model_name}] xato: {e}")
+                last_err = e
+        raise last_err
 
     try:
         import concurrent.futures
