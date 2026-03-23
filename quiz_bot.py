@@ -16,10 +16,10 @@ except ImportError:
     PYPDF_OK = False
 
 try:
-    import google.generativeai as genai
-    GEMINI_OK = True
+    from groq import Groq
+    GROQ_OK = True
 except ImportError:
-    GEMINI_OK = False
+    GROQ_OK = False
 
 try:
     from PIL import Image, ImageDraw
@@ -36,7 +36,7 @@ from telegram.ext import (
 
 # ── CONFIG ────────────────────────────────────────────────
 TOKEN          = os.getenv("BOT_TOKEN", "8657957504:AAEqdqcK9Ljix2-DYiYoXFgWiuWJzIkq9c8")
-GEMINI_KEY     = os.getenv("GEMINI_API_KEY", "")
+GROQ_KEY       = os.getenv("GROQ_API_KEY", "")
 _adm      = os.getenv("ADMIN_IDS", "0")
 ADMIN_IDS = [int(x) for x in _adm.split(",") if x.strip().isdigit()]
 DB_PATH   = "quiz.db"
@@ -86,7 +86,7 @@ TX = {
         # PDF
         "pdf_recv"    : "📄 PDF qabul qilindi! AI test tuzmoqda... ⏳ (30-60 soniya)",
         "pdf_no_text" : "❌ PDF dan matn o'qib bo'lmadi.",
-        "pdf_no_ai"   : "❌ AI xizmati sozlanmagan (GEMINI_API_KEY yo'q). Admin bilan bog'laning.",
+        "pdf_no_ai"   : "❌ AI xizmati sozlanmagan (GROQ_API_KEY yo'q). Admin bilan bog'laning.",
         "pdf_fail"    : "❌ Test tuzishda xato yuz berdi. Qayta urinib ko'ring.",
         "pdf_done"    : "✅ {n} ta savol tayyorlandi! Boshlanmoqda...",
         # Feedback
@@ -161,7 +161,7 @@ TX = {
         # PDF
         "pdf_recv"    : "📄 PDF получен! AI составляет тест... ⏳ (30-60 секунд)",
         "pdf_no_text" : "❌ Не удалось прочитать текст из PDF.",
-        "pdf_no_ai"   : "❌ AI сервис не настроен (GEMINI_API_KEY отсутствует). Обратитесь к администратору.",
+        "pdf_no_ai"   : "❌ AI сервис не настроен (GROQ_API_KEY отсутствует). Обратитесь к администратору.",
         "pdf_fail"    : "❌ Ошибка при составлении теста. Попробуйте снова.",
         "pdf_done"    : "✅ Подготовлено {n} вопросов! Начинаем...",
         # Feedback
@@ -1753,7 +1753,7 @@ def extract_pdf_text(file_bytes: bytes) -> str:
 
 async def ai_generate_questions(text: str, lang: str, n: int = 10) -> list:
     """Google Gemini API orqali savol yaratish"""
-    if not GEMINI_OK or not GEMINI_KEY:
+    if not GROQ_OK or not GROQ_KEY:
         return []
 
     prompt_uz = f"""Quyidagi matndan {n} ta test savoli tuz (o'zbek tilida).
@@ -1790,34 +1790,23 @@ ans = индекс правильного варианта (0=A, 1=B, 2=C, 3=D)
 
     prompt = prompt_uz if lang == "uz" else prompt_ru
 
-    # Modellar ro'yxati — biri limitga yetsa keyingisini sinaydi
-    GEMINI_MODELS = [
-        "gemini-2.0-flash-lite",
-        "gemini-1.5-flash",
-        "gemini-2.0-flash",
-        "gemini-1.5-flash-8b",
-    ]
-
-    def _gemini_call(p):
-        genai.configure(api_key=GEMINI_KEY)
-        last_err = None
-        for model_name in GEMINI_MODELS:
-            try:
-                model    = genai.GenerativeModel(model_name)
-                response = model.generate_content(p)
-                raw      = response.text.strip()
-                log.info(f"gemini [{model_name}] OK, first 100: {raw[:100]}")
-                return raw
-            except Exception as e:
-                log.warning(f"gemini [{model_name}] xato: {e}")
-                last_err = e
-        raise last_err
+    def _groq_call(p):
+        client = Groq(api_key=GROQ_KEY)
+        completion = client.chat.completions.create(
+            model    = "llama-3.3-70b-versatile",
+            messages = [{"role": "user", "content": p}],
+            temperature = 0.3,
+            max_tokens  = 4096,
+        )
+        raw = completion.choices[0].message.content.strip()
+        log.info(f"groq OK, first 100: {raw[:100]}")
+        return raw
 
     try:
         import concurrent.futures
         loop = asyncio.get_event_loop()
         with concurrent.futures.ThreadPoolExecutor(max_workers=1) as pool:
-            raw = await loop.run_in_executor(pool, _gemini_call, prompt)
+            raw = await loop.run_in_executor(pool, _groq_call, prompt)
 
         # JSON tozalash
         if "```" in raw:
@@ -1853,7 +1842,7 @@ async def handle_pdf(u: Update, ctx: ContextTypes.DEFAULT_TYPE):
 
     await ctx.bot.send_message(cid, txt(uid, "pdf_recv"))
 
-    if not GEMINI_OK or not GEMINI_KEY:
+    if not GROQ_OK or not GROQ_KEY:
         await ctx.bot.send_message(cid, txt(uid, "pdf_no_ai"),
                                    reply_markup=main_kb(uid)); return
     try:
