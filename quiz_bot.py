@@ -16,7 +16,7 @@ except ImportError:
     PYPDF_OK = False
 
 try:
-    from groq import Groq
+    import requests as _requests
     GROQ_OK = True
 except ImportError:
     GROQ_OK = False
@@ -1791,14 +1791,23 @@ ans = индекс правильного варианта (0=A, 1=B, 2=C, 3=D)
     prompt = prompt_uz if lang == "uz" else prompt_ru
 
     def _groq_call(p):
-        client = Groq(api_key=GROQ_KEY)
-        completion = client.chat.completions.create(
-            model    = "llama-3.3-70b-versatile",
-            messages = [{"role": "user", "content": p}],
-            temperature = 0.3,
-            max_tokens  = 4096,
+        import requests as req
+        resp = req.post(
+            "https://api.groq.com/openai/v1/chat/completions",
+            headers={
+                "Authorization": f"Bearer {GROQ_KEY}",
+                "Content-Type" : "application/json",
+            },
+            json={
+                "model"      : "llama-3.3-70b-versatile",
+                "messages"   : [{"role": "user", "content": p}],
+                "temperature": 0.3,
+                "max_tokens" : 4096,
+            },
+            timeout=60
         )
-        raw = completion.choices[0].message.content.strip()
+        resp.raise_for_status()
+        raw = resp.json()["choices"][0]["message"]["content"].strip()
         log.info(f"groq OK, first 100: {raw[:100]}")
         return raw
 
